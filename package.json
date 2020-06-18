@@ -1,0 +1,16 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "discord test",
+  "main": "main.js",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "eslint": "^7.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "pink",
+  "license": "ISC"
+}
