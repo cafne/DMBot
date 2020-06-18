@@ -1,6 +1,6 @@
 module.exports = {
   name: "⚰️",
-  desc: "he dead",
+  desc: "Reacts to the :coffin: emoji",
   execute(message) {
     if (message.author.hasOwnProperty("dead")) {
         message.author.dead ++
