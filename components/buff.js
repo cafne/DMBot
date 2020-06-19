@@ -1,7 +1,6 @@
 module.exports = {
   create: function(kwargs) {
     var self = this
-    self.kwargs = kwargs
 
     // Additive modifiers
     self.str_bonus = 0
@@ -21,7 +20,6 @@ module.exports = {
     self.hp_multiply = 1.0
     self.wis_multiply = 1.0
 
-    console.log(self.kwargs)
     this.update(self, kwargs)
     console.log(self)
   },

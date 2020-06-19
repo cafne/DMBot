@@ -7,7 +7,7 @@ module.exports = {
     var self = Object.create(this)
     self.name = name
     self.hp = Stat.create("HP", hp)
-    self.modifiers = []
+    self.buffs = []
     self.inventory = Inventory.create()
     return self;
   }
