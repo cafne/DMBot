@@ -1,9 +1,4 @@
 // Import Dependencies
-const Player = require('./components/player.js')
-const Inventory = require('./components/inventory.js')
-const Stat = require('./components/stats.js')
-const Item = require('./components/item.js')
-
 const fs = require('fs')
 const Discord = require('discord.js');
 
@@ -33,7 +28,7 @@ for (const file of emojiFiles) {
 }
 
 // This holds a list of Players/Characters with stats
-var members = []
+var members = require('./globals.js')
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);

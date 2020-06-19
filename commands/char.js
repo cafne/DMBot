@@ -1,3 +1,6 @@
+var { members } = require('../globals.js')
+
+console.log(members[0])
 module.exports = {
     name: "status",
     desc: "Prints character info.",

@@ -1,3 +1,6 @@
+var {members} = require('../globals.js')
+const Player = require('../components/player.js')
+
 module.exports = {
   name: "newchar",
   desc: "creates new character",
