@@ -1,4 +1,4 @@
-var {members} = require('../globals.js')
+var {members, save} = require('../globals.js')
 const Player = require('../components/player.js')
 
 module.exports = {
@@ -7,6 +7,7 @@ module.exports = {
   args: true,
   execute(message, args) {
     members.push(Player.create(args[0], 12))
+    save(members, "members")
     message.channel.send(`Created new character ${args[0]}`)
   }
 }

@@ -28,7 +28,9 @@ for (const file of emojiFiles) {
 }
 
 // This holds a list of Players/Characters with stats
-var members = require('./globals.js')
+var {members, save, load} = require('./globals.js')
+
+load(members, "members")
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
