@@ -20,7 +20,7 @@ if (message.content.startsWith(prefix)) {
 >>[0] [1] [2] [3] [4] [5] [6] [7] [8] [9]  
 >> !   r   o   l   l   l       1   d   6 
 >>```  
->...So <code>.slice(1)</code> would begin extracting from the **first** index-- "r" to the **last** and ninth index "6":  leaving us with <code>roll 1d6</code> .
+>...So <code>.slice(1)</code> would begin extracting from index number <code>1</code>-- "r" to the **last** and <code>9</code>th index "6":  leaving us with <code>roll 1d6</code> .
 
 > <code>/ +/</code> Is a [regex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions). In simplest terms, it looks for all spaces. We pass this into the <code>.split()</code> function to split <code>roll 1d6</code> into an array by it's spaces.
 >The resulting array is <code>args = ["roll", "1d6"]</code>  
