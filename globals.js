@@ -7,10 +7,8 @@ function load(item, key_name) {
   fs.readFile("globals.json", function(err, data) {
     if (err) throw err;
     var data = JSON.parse(data)
-    for (var i of Object.keys(data)) {
-      console.log(i, key_name)
+    for (i of Object.keys(data)) {
       if (i == key_name) {
-        console.log(key_name)
         Object.assign(item, data[i])
       }
     }
@@ -21,7 +19,7 @@ function save(item, key_name) {
   fs.readFile("globals.json", function(err, data) {
     if (err) throw err;
     var data = JSON.parse(data)
-    data[Object.keys({item})[0]] = item
+    data[key_name] = item
     data = JSON.stringify(data)
     fs.writeFile("globals.json", data, function(err, file) {
       if (err) throw err;
