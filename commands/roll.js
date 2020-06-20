@@ -29,7 +29,7 @@ module.exports = {
       //Start rolling dice
 
       for (x=1, len=num; x <= num; x++) {
-        result[x] = Math.floor(Math.random() * sides+1)
+        result[x] = Math.floor(Math.random() * sides) + 1
       }
 
       // Each time the dice are rolled, we record the roll number and roll result and store it in a new property of <result>

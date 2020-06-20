@@ -150,10 +150,9 @@ each time the bot restarts.
 - <a name="dice"></a><h4>Multiple Dice Roller</h4>
     >Usage: <code>[number of dice]d[number of sides]</code>
 
-    This utilizes the <code>Math.Random()</code> module to get a random point value from 0 to 1. We then multiply this value
-    by the number of <code>sides_on_a_die + 1</code> and run this through Math.floor() to round the decimal down.
+    This utilizes the <code>Math.Random()</code> module to get a random point value from 0 to 1. We then multiply this value by the number of <code>sides_on_a_die</code> and run this through <code>Math.floor()</code> to round the decimal down; this gets us a random number between <code>0 and sides_on_a_die</code>. A die doesn't have a side with <code>0</code> on it, so we also add <code>1</code> to ensure that the lowest number returned is at least <code>1</code>.
     ```javascript
-        Math.floor(Math.random() * sides + 1)  
+        Math.floor(Math.random() * sides) + 1  
     ```
     > A basic code snippet for generating random numbers
 
