@@ -6,11 +6,9 @@ module.exports = {
   desc: "creates new character",
   args: true,
   execute(message, args) {
-    for (character of members){
-      if (character.name == args[0]){
-        message.channel.send("That character already exists!")
-        return
-      }
+    if (members.some(character => character.name == args[0])){
+      message.channel.send("That character already exists!")
+      return
     }
     members.push(Player.create(args[0], 12))
     save(members, "members")
