@@ -1,26 +1,18 @@
+
+/*
+  // Start StatModifier //
+
+  / Properties /
+  - value: A numerical value; can be positive or negative. Is added to a Stat when Stat.get_final_value() is run.
+  - source: The item/weapon/user-defined buff that the Modifier is attached to. Can be <null> (none).
+
+*/
+
 module.exports = {
-
-  default_order: [
-    "flat",
-    "percent_add",
-    "percent_mult"
-  ],
-
-  create: function(value, type, order=null, source=null) {
-    var self = this
+  create: function(value, source=null) {
+    var self = Object.create(this)
     self.value = value
-    self.type = type
-    self.order = order
     self.source = source
-    if (self.order == null) {
-      self.order = self.default_order.index(type)
-    }
-    else if (!self.default_order.has(self.order)) {
-      console.log(self.order, self.default_order)
-      throw `TypeError: ${self.order} is not a type of <Stat_Modifier Order>`
-    }
-    else {
-      self.order = self.default_order.index(order)
-    }
+    return self
   }
 }
