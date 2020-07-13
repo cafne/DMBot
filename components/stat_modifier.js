@@ -10,7 +10,7 @@
 
 module.exports = {
   create: function(value, source=null) {
-    var self = Object.create(this)
+    let self = Object.create(this)
     self.value = value
     self.source = source
     return self

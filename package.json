@@ -4,10 +4,9 @@
   "description": "discord test",
   "main": "main.js",
   "dependencies": {
-    "discord.js": "^12.2.0",
-    "eslint": "^7.2.0"
+    "discord.js": "^12.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {"eslint": "^7.2.0"},
   "scripts": {
     "test": "node main.js"
   },

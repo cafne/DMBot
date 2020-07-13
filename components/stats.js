@@ -40,7 +40,7 @@ const StatModifier = require('./stat_modifier.js')
 
 module.exports = {
   create: function(name, base_val) {
-    var self = Object.create(this)
+    let self = Object.create(this)
     self.name = name;
     self._base_val = base_val;
     self._value = base_val;
@@ -55,7 +55,7 @@ module.exports = {
       this.changed = false
       return this._value
     }
-    else return this.value;
+    else return this._value;
   },
 
   get base_val() {
@@ -86,7 +86,7 @@ module.exports = {
   // vv somewhat redundant right now but maybe we'll use it later haha vv
 
   remove_modifier: function(mod) {
-    if (this.modifiers.some(item => item == mod)) {
+    if (this.modifiers.includes(mod)) {
       this.modifiers.splice(this.modifiers.indexOf(mod), 1)
       this.changed = true
       return true

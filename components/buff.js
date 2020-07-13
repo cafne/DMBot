@@ -20,7 +20,10 @@ const StatModifier = require('./stat_modifier.js')
 module.exports = {
 
   create: function(kwargs) {
-    var self = Object.create(this)
+    let self = Object.create(this)
+
+    self.name = ""
+    self.desc = ""
 
     // Additive modifiers
     self.str_bonus = 0
@@ -33,7 +36,7 @@ module.exports = {
   },
 
   update: function(self, kwargs) {
-    for (var prop of Object.keys(kwargs)) {
+    for (let prop of Object.keys(kwargs)) {
       if (Object.keys(self).includes(prop)){
         self[prop] = kwargs[prop]
       }
@@ -48,5 +51,12 @@ module.exports = {
     if (this.int_bonus != 0) player.int.add_modifier(StatModifier.create(this.int_bonus, source=this))
     if (this.dex_bonus != 0) player.dex.add_modifier(StatModifier.create(this.dex_bonus, source=this))
 
+  },
+
+  remove: function(player) {
+    player.hp.remove_all_from_source(this)
+    player.str.remove_all_from_source(this)
+    player.int.remove_all_from_source(this)
+    player.dex.remove_all_from_source(this)
   }
 }
