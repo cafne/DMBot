@@ -67,6 +67,15 @@ module.exports = {
         item.apply(player)
       })
     }
+    result.final = 0
+    console.log(result.roll);
+    if (Object.getOwnPropertyNames(result.roll).length) {
+      result.final += Object.values(result.roll).reduce((first, next) => first + next)
+    }
+
+    if (Object.getOwnPropertyNames(result.stats).length) {
+      result.final += Object.values(result.stats).reduce((first, next) => first + next)
+    }
     return result
   },
 

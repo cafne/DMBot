@@ -4,8 +4,6 @@ const Discord = require('discord.js');
 
 // Create the Client and unpack Command Prefix and Token
 const client = new Discord.Client();
-const {prefix, token} = require('./config.json');
-
 // Setup Commands
 client.commands = new Discord.Collection();
 
@@ -36,7 +34,8 @@ for (const file of emojiFiles) {
   client.emoji_events.set(emoji.name, emoji);
 }
 
-var {members, skills, save, load, alias, get_alias, buffs} = require('./globals.js')
+var {members, skills, save, load, alias, get_alias,
+	buffs, prefix, token} = require('./globals.js')
 
 load(alias, "alias")
 load(skills, "skills")
@@ -52,6 +51,7 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
+
 client.on('message', msg => {
   // Ignore if the bot sends a msg
   if (msg.author.bot) {
@@ -59,8 +59,10 @@ client.on('message', msg => {
   }
   else if (msg.content.startsWith(prefix)) {
 
+		if (!msg.guild) return
+
     // Separate the command's name from the rest of the message
-    // Individual elements of the message are separated by spaces
+    // Individual elements of the message are separated by commas
     // Each element is indexed into a list: <args>
 
     const commandName = msg.content.slice(prefix.length).split(/ +/).shift().toLowerCase();

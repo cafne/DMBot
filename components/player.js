@@ -1,3 +1,4 @@
+const {player_stats} = require('../config.json')
 const Inventory = require('./inventory.js')
 const Stat = require('./stats.js')
 const Item = require('./item.js')
@@ -11,17 +12,66 @@ const Buff = require('./buff.js')
 
 module.exports = {
   create: function(kwargs) {
+
     let self = Object.create(this)
-    self.player_id = kwargs["player_id"]
     self.name = kwargs["name"]
-    self.hp = Stat.create("HP", kwargs["hp"])
-    self.int = Stat.create("INT", kwargs["int"])
-    self.str = Stat.create("STR", kwargs["str"])
-    self.dex = Stat.create("DEX", kwargs["dex"])
+
+    // Lazy default values.
+    self.player_id = (kwargs.hasOwnProperty("player_id")) ? kwargs["player_id"] : ""
+
+    if (player_stats.length) {
+      player_stats.forEach((item) => {
+        self[item] = (kwargs.hasOwnProperty(item)) ? Stat.create(item.toUpperCase(),
+        kwargs[item]) : Stat.create(item.toUpperCase(), 1)
+      });
+    }
+
     self.buffs = []
     self.inventory = Inventory.create()
 
     return self;
+  },
+
+  get_stats: function(pretty_print=false) {
+    final = {}
+    player_stats.forEach((item) => {
+      final[item] = this[item]
+    });
+    if (pretty_print) {
+      final = Object.getOwnPropertyNames(final).map(item =>
+        `${item.toUpperCase()}: ${final[item].value}\n`).toString().replace(/,/g, "").trim()
+    }
+    return final
+  },
+
+  equip: function(buff, stack=1) {
+    if (!this.buffs.includes(buff)){
+      try {
+        buff.stack = stack
+        buff.apply(this)
+      } catch (error) {
+        console.log("Error with parsing buffs.")
+        return false
+      }
+      this.buffs.push(buff)
+    } else {
+      buff = this.buffs.indexOf(buff)
+      this.buffs[buff].stack += stack
+    }
+  },
+
+  get title() {
+    return this.name.charAt(0).toUpperCase() + this.name.substr(1)
+  },
+
+  unequip: function(buff) {
+    let find = this.buffs.indexOf(buff)
+    if (find == -1) {
+      console.log("Buff does not exist.")
+      return false
+    }
+    buff.remove(this)
+    this.buffs.splice(buff, 1)
   },
 
   load: function(kwargs) {
@@ -33,29 +83,20 @@ module.exports = {
     self.player_id = kwargs["player_id"]
     self.name = kwargs["name"]
 
-    self.hp._base_val = kwargs["hp"]._base_val
-    self.hp._value = kwargs["hp"]._value
-    self.hp.modifiers = kwargs["hp"].modifiers
-    self.hp.changed = kwargs["hp"].changed
-
-    self.int._base_val = kwargs["int"]._base_val
-    self.int._value = kwargs["int"]._value
-    self.int.modifiers = kwargs["int"].modifiers
-    self.int.changed = kwargs["int"].changed
-
-    self.str._base_val = kwargs["str"]._base_val
-    self.str._value = kwargs["str"]._value
-    self.str.modifiers = kwargs["str"].modifiers
-    self.str.changed = kwargs["str"].changed
-
-    self.dex._base_val = kwargs["dex"]._base_val
-    self.dex._value = kwargs["dex"]._value
-    self.dex.modifiers = kwargs["dex"].modifiers
-    self.dex.changed = kwargs["dex"].changed
+    player_stats.forEach((item) => {
+      if (kwargs.hasOwnProperty(item)) {
+        self[item]._base_val = kwargs[item]._base_val
+        self[item]._value = kwargs[item]._value
+        self[item].modifiers = kwargs[item].modifiers
+        self[item].changed = kwargs[item].changed
+      } else {
+        self[item]._base_val = self[item]._value = self[item].modifiers = self[item].changed = 1
+      }
+    });
 
     if (kwargs.buffs.length) {
       self.buffs = kwargs["buffs"].map(item => Buff.create(kwargs["buffs"]))
-      self.buffs.forEach(item => item.apply(self))
+      self.buffs.forEach(item => self.equip(item))
     }
 
     self.inventory = Inventory.create()

@@ -1,3 +1,5 @@
+const dice_roller = require('../../components/dice_roller.js');
+
 module.exports = {
   name: "roll",
   desc: "dice roll",
@@ -8,12 +10,11 @@ module.exports = {
 
     // Check if there are only two arguments given, and if they are numbers
     if (args.length == 2 && !args.some(isNaN)) {
-      var num = args[0]
-      var sides = args[1]
-      var result = {}
+      const num = args[0]
+      const sides = args[1]
 
       // Create the embed
-      const embed = {
+      let embed = {
         "description": "",
         "color": 12042918,
         "footer": {
@@ -28,13 +29,7 @@ module.exports = {
 
       //Start rolling dice
 
-      for (x=1, len=num; x <= num; x++) {
-        result[x] = Math.floor(Math.random() * sides) + 1
-      }
-
-      // Each time the dice are rolled, we record the roll number and roll result and store it in a new property of <result>
-      // We do this rather than just adding the roll result to a total so that we can list each individual roll in the Discord Embed
-      // footer
+      const result = dice_roller(num, sides)
 
       // Update Embed
 

@@ -1,5 +1,6 @@
 const Player = require('./player.js')
 const StatModifier = require('./stat_modifier.js')
+const {player_stats} = require('../config.json')
 
 /*
   // Start Buff //
@@ -7,11 +8,11 @@ const StatModifier = require('./stat_modifier.js')
   It can also exist on it's own as a user-defined Stat De/Buff.
 
   / Properties /
-  - str/int/dex/hp_bonus: A numerical value to add to a Player's stat. Can also be negative.
+  - str/int/dex/hp: A numerical value to add to a Player's stat. Can also be negative.
 
   / Misc /
   - Arguments are passed to the .create() method as an Object.
-    ex: Buff.create({"int_bonus": 5})
+    ex: Buff.create({"int": 5})
   - apply(): Takes one argument-- a Player object. This method creates a new StatModifier from Buff's
     <stat_bonus> Properties and applies to to the corresponding player Stat.
 
@@ -23,14 +24,14 @@ module.exports = {
     let self = Object.create(this)
 
     self.name = ""
+    self.icon = ""
     self.desc = ""
 
     // Additive modifiers
-    self.str_bonus = 0
-    self.int_bonus = 0
-    self.dex_bonus = 0
-    self.hp_bonus = 0
-
+    player_stats.forEach((item) => {
+      self[item] = 0
+    });
+    self.stack = 1
     return this.update(self, kwargs)
 
   },
@@ -45,18 +46,40 @@ module.exports = {
   },
 
   apply: function(player) {
+    Object.getOwnPropertyNames(this).forEach((key) => {
+      if (!["name", "desc", "icon"].includes(this[key])) {
+        player[key].add_modifier(StatModifier.create(this[key] * this.stack, source=this))
+      }
+    });
+  },
 
-    if (this.hp_bonus != 0) player.hp.add_modifier(StatModifier.create(this.hp_bonus, source=this))
-    if (this.str_bonus != 0) player.str.add_modifier(StatModifier.create(this.str_bonus, source=this))
-    if (this.int_bonus != 0) player.int.add_modifier(StatModifier.create(this.int_bonus, source=this))
-    if (this.dex_bonus != 0) player.dex.add_modifier(StatModifier.create(this.dex_bonus, source=this))
+  get title() {
+    return `${this.name.charAt(0).toUpperCase() + this.name.substr(1)} ${this.icon}`
+  },
 
+  get_stats: function(pretty_print=false) {
+    let final = {}
+    Object.getOwnPropertyNames(this).forEach((key) => {
+      if (!["name", "desc", "icon", "stack"].includes(key)) {
+        final[key] = this[key]
+      }
+    });
+
+    console.log(final);
+
+    if (pretty_print) {
+      final = Object.getOwnPropertyNames(final).filter(item => this[item] !=0).map(item =>
+        `${item.toUpperCase()}: ${final[item]}${(this.stack > 1) ? " (x"+this.stack+")" : ""}\n`).toString().replace(/,/g, "").trim()
+        console.log(final);
+    }
+    return final
   },
 
   remove: function(player) {
-    player.hp.remove_all_from_source(this)
-    player.str.remove_all_from_source(this)
-    player.int.remove_all_from_source(this)
-    player.dex.remove_all_from_source(this)
+    Object.getOwnPropertyNames(this).forEach((key) => {
+      if (!["name", "desc", "icon"].includes(this[key])) {
+        player[key].remove_all_from_source(this)
+      }
+    });
   }
 }
