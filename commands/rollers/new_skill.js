@@ -20,7 +20,7 @@ module.exports = {
     commands = message.client.commands.map(command => command.name)
 
     new_skill = Skill.create(args_parse(args, true, {"stats": "array", "dice": "dice"}))
-    if (!new_skill || new_skill.name == "" || (new_skill.stats.length && new_skill.stats.every(
+    if (!new_skill || new_skill.name == "" || !(new_skill.stats.length && new_skill.stats.every(
       item => player_stats.includes(item)))) {
       return message.channel.send("```Error: arguments are not valid.```")
     }

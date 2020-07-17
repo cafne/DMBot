@@ -68,12 +68,14 @@ client.on('message', msg => {
     const commandName = msg.content.slice(prefix.length).split(/ +/).shift().toLowerCase();
     const args = msg.content.slice(prefix.length + commandName.length).split(",").map(item => item.trim()).filter(item => item != "");
 
-		// Command lookup + checking for alias
+		// Start Command lookup
+		// First we check if the command is a skill
 		let command = client.commands.find(item => item.name == "skill").get_alias(commandName);
 
-		// Early exit if the Bot doesn't have a command by <commandName>
+		// If not check for a proper command or alias
 		if (!command ) {
 			command = client.commands.get(commandName) || get_alias(commandName, client.commands)
+			// Early exit if the Bot doesn't have a command by <commandName>
 			if (!command) return;
 		} else args.push(commandName)
 

@@ -18,13 +18,11 @@ module.exports = {
   },
   execute(message, args) {
     if (!args.length) {
-      skills.push(Skill.create({name: "askil", stats: ["str"], dice_num: 1, dice_sides: 6, buffonce: false, buff: [Buff.create({str_bonus: 2})]}))
-      save(skills, "skills")
-      message.channel.send(`Sent skill: ${message.content}`)
+      return
     }
     else {
       if (args.length == 2) {
-        let character = members.find(character => character.name == args[0])
+        var character = members.find(character => character.name == args[0])
         var skill = skills.find(skill => skill.name == args[1])
       } else if (args.length == 1) {
         var character = members.find(character => character.player_id == message.author.id)
@@ -32,7 +30,6 @@ module.exports = {
       } else return message.channel.send("Please specify a skill and character.")
 
       if (!character || !skill) return
-
 
       // Use the skill
       let result = skill.use(character)
