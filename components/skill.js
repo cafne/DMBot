@@ -13,6 +13,7 @@ module.exports = {
     self.bufftime = "before"
     self.buffonce = true
     self.desc = ""
+    self.icon = ""
 
     return self.update(self, kwargs)
   },
@@ -29,6 +30,10 @@ module.exports = {
   get_desc: function(player) {
     return (this.desc.search("name") == -1) ? this.desc : this.desc.replace("name",
     player.name.charAt(0).toUpperCase() + player.name.substr(1))
+  },
+
+  get title() {
+    return `${this.name.charAt(0).toUpperCase() + this.name.substr(1)} ${this.icon}`
   },
 
   use: function(player) {

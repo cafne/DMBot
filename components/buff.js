@@ -81,5 +81,9 @@ module.exports = {
         player[key].remove_all_from_source(this)
       }
     });
+  },
+
+  load: function(kwargs) {
+    return this.create(kwargs)
   }
 }

@@ -37,6 +37,9 @@ function load(item, key_name) {
           })
           Object.assign(item, new_data)
           return
+        case "buffs":
+          Object.assign(item, data[key_name].map(item => Buff.load(item)))
+          return
         default:
           Object.assign(item, data[key_name])
           return

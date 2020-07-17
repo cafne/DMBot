@@ -5,9 +5,10 @@ module.exports = {
     let self = Object.create(this)
     self.name = ""
     self.amt = 1
-    self.buffs = [Buff.create({name: "Test2", stack: 2, icon: ":skull:", hp: 22}) ,Buff.create({name: "Test", icon: ":skull:", str: 12})]
+    self.buffs = []
     self.channels = []
     self.consumable = true
+    self.desc = ""
     return self.update(self, kwargs);
   },
 
