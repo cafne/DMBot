@@ -19,28 +19,28 @@ module.exports = {
         break;
       case "members":
         if (members.length) {
-          send.description = "```" + members.map(char => char.title).toString().replace(/,/g, "\n") + "```"
+          send.description = "```\n" + members.map(char => char.title).toString().replace(/,/g, "\n") + "```"
         } else {
           send.description = "```No characters registered.```"
         }
         break;
       case "skills":
         if (skills.length) {
-          send.description = "```" +skills.map(skill => `${skill.title}:\n${skill.desc}`).toString().replace(/,/g, "\n\n") + "```"
+          send.description = "```\n" +skills.map(skill => `${skill.title}:\n${skill.desc}`).toString().replace(/,/g, "\n\n") + "```"
         } else {
           send.description = "```No skills registered.```"
         }
         break;
       case "buffs":
       if (buffs.length) {
-          send.description = "```" + buffs.map(buff => `${buff.title}:\n${buff.desc}`).toString().replace(/,/g, "\n\n") + "```"
+          send.description = "```\n" + buffs.map(buff => `${buff.title}:\n${buff.desc}`).toString().replace(/,/g, "\n\n") + "```"
         } else {
           send.description = "```No buffs registered.```"
         }
         break;
       case "items":
       if (items.length) {
-          send.description = "```" + items.map(item => `${item.charAt(0).toUpperCase()+item.substr(1)}:\n${skill.desc}`).toString().replace(/,/g, "\n\n") +"```"
+          send.description = "```\n" + items.map(item => `${item.charAt(0).toUpperCase()+item.substr(1)}:\n${skill.desc}`).toString().replace(/,/g, "\n\n") +"```"
         } else {
           send.description = "```No items registered.```"
         }
