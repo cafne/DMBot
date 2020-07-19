@@ -6,9 +6,9 @@ module.exports = {
   desc: "Grabs the globals.json file",
   args: false,
   admin: true,
-  execute(message, args) {
+  async execute(message, args) {
     save_all()
     attachment = new Discord.MessageAttachment('./globals.json')
-    message.channel.send("Heres the bot's global data!", attachment)
+    await message.channel.send("Heres the bot's global data!", attachment)
   }
 }

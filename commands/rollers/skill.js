@@ -16,7 +16,7 @@ module.exports = {
     }
     return false
   },
-  execute(message, args) {
+  async execute(message, args) {
     if (!args.length) {
       return
     }
@@ -27,7 +27,7 @@ module.exports = {
       } else if (args.length == 1) {
         var character = members.find(character => character.player_id == message.author.id)
         var skill = skills.find(skill => skill.name == args[0])
-      } else return message.channel.send("Please specify a skill and character.")
+      } else return await message.channel.send("Please specify a skill and character.")
 
       if (!character || !skill) return
 
@@ -36,7 +36,7 @@ module.exports = {
 
       // Start Embed building
       let character_name = character.name.charAt(0).toUpperCase() + character.name.substr(1)
-      let title = `${skill.name.charAt(0).toUpperCase() + skill.name.substr(1)}`
+      let title = skill.title
       let footer = `${Object.values(result.roll).toString().replace(/,/g, " + ")}`
 
       for (var i = 0; i < Object.keys(result.stats).length; i++) {
@@ -62,7 +62,7 @@ module.exports = {
           }
         ]
       }
-      message.channel.send({embed: embed})
+      await message.channel.send({embed: embed})
     }
   }
 }

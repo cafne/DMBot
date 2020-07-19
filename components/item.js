@@ -9,6 +9,8 @@ module.exports = {
     self.channels = []
     self.consumable = true
     self.desc = ""
+    self.icon = ""
+    self.tradeable = true
     return self.update(self, kwargs);
   },
 
@@ -21,11 +23,15 @@ module.exports = {
     return self
   },
 
+  get title() {
+    return `${this.icon} ${this.name.charAt(0).toUpperCase() + this.name.substr(1)}`
+  },
+
   get_buffs: function(pretty_print=false) {
     if (pretty_print) {
       return this.buffs.map(item =>
-        (item.name || item.icon) ? `${item.title}:\`\`\`${item.get_stats(true)}\`\`\`` :
-        `Flat Value:\`\`\`${item.get_stats(true)}\`\`\``)
+        (item.name || item.icon) ? (!item.stats) ? `${item.title}:\`\`\`${item.desc}\`\`\``:
+        `${item.title}:\`\`\`${item.get_stats(true)}\`\`\`` : `Flat Value:\`\`\`${item.get_stats(true)}\`\`\``)
     } else return this.buffs
   },
 

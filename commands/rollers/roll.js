@@ -5,7 +5,7 @@ module.exports = {
   desc: "dice roll",
   args: true,
   usage: "<no of dice>d<no of sides>",
-  execute(message, args) {
+  async execute(message, args) {
     args = args[0].split("d")
 
     // Check if there are only two arguments given, and if they are numbers
@@ -44,10 +44,10 @@ module.exports = {
       embed["author"]["icon_url"] = message.author.avatarURL()
       embed["footer"]["text"] = Object.values(result).toString().replace(/,/g, "+")
 
-      message.channel.send({embed: embed})
+      await message.channel.send({embed: embed})
     }
     else {
-      message.channel.send("Incorrect syntax.")
+      await message.channel.send("Incorrect syntax.")
     }
   }
 }

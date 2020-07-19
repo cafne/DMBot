@@ -47,14 +47,35 @@ module.exports = {
 
   apply: function(player) {
     Object.getOwnPropertyNames(this).forEach((key) => {
-      if (!["name", "desc", "icon"].includes(this[key])) {
+      if (!["name", "desc", "icon", "stack"].includes(key)) {
         player[key].add_modifier(StatModifier.create(this[key] * this.stack, source=this))
       }
     });
   },
 
+  remove: function(player) {
+    Object.getOwnPropertyNames(this).forEach((key) => {
+      if (!["name", "desc", "icon", "stack"].includes(key)) {
+        player[key].remove_all_from_source(this)
+      }
+    });
+  },
+
+  reapply: function(player) {
+    this.remove(player)
+    this.apply(player)
+  },
+
   get title() {
     return `${this.name.charAt(0).toUpperCase() + this.name.substr(1)} ${this.icon}`
+  },
+
+  get short_desc() {
+    if (Object.values(this.get_stats()).some(item => item != 0)) {
+      return `${this.get_stats(true)}`
+    } else {
+      return `${this.desc}`
+    }
   },
 
   get_stats: function(pretty_print=false) {
@@ -65,22 +86,11 @@ module.exports = {
       }
     });
 
-    console.log(final);
-
     if (pretty_print) {
       final = Object.getOwnPropertyNames(final).filter(item => this[item] !=0).map(item =>
         `${item.toUpperCase()}: ${final[item]}${(this.stack > 1) ? " (x"+this.stack+")" : ""}\n`).toString().replace(/,/g, "").trim()
-        console.log(final);
     }
     return final
-  },
-
-  remove: function(player) {
-    Object.getOwnPropertyNames(this).forEach((key) => {
-      if (!["name", "desc", "icon"].includes(this[key])) {
-        player[key].remove_all_from_source(this)
-      }
-    });
   },
 
   load: function(kwargs) {

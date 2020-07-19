@@ -19,21 +19,29 @@ module.exports = {
   async execute(message, args) {
     commands = message.client.commands.map(command => command.name)
 
-    new_skill = Skill.create(args_parse(args, true, {"stats": "array", "dice": "dice"}))
-    if (!new_skill || new_skill.name == "" || !(new_skill.stats.length && new_skill.stats.every(
-      item => player_stats.includes(item)))) {
-      return message.channel.send("```Error: arguments are not valid.```")
+    new_skill = Skill.create(args_parse(args, true, {"stats": "array", "dice": "dice", "buffs": "array"}))
+
+    if (new_skill.hasOwnProperty("buffs")) {
+      new_skill.buffs.forEach((item, i) => {
+        new_skill.buffs[i] = buffs.find(buff => buff.name = item)
+      });
+      if (new_skill.buffs.includes(undefined)) return await message.channel.send("```Error: could not find buffs.```")
+    }
+
+    if (!new_skill || new_skill.name == "" || !new_skill.stats.every(
+      item => player_stats.includes(item))) {
+      return await message.channel.send("```Error: arguments are not valid.```")
     }
 
     if (!validate_command_name(new_skill.name)) {
-      return message.channel.send("```Error: there is a conflict with the command name```")
+      return await message.channel.send("```Error: there is a conflict with the command name```")
     }
 
-    // TODO: Find and parse buffs
+    console.log(new_skill);
 
     skills.push(new_skill)
 
     save(skills, "skills")
-    message.channel.send(`Created new skill ${new_skill.name.charAt(0).toUpperCase()+new_skill.name.substr(1)}`)
+    await message.channel.send(`Created new skill ${new_skill.name.charAt(0).toUpperCase()+new_skill.name.substr(1)}`)
   }
 }

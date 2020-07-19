@@ -38,7 +38,7 @@ module.exports = {
         }
       });
       save_all()
-      message.channel.send("```Data reset.```")
+      await message.channel.send("```Data reset.```")
     }
   }
 }

@@ -7,7 +7,7 @@ module.exports = {
     args: true,
     args_length: 2,
     usage: "!alias <command> <new_alias>",
-    execute(message, args) {
+    async execute(message, args) {
 
       // Get the list of Bot commands
       commands = message.client.commands.map(command => command.name)
@@ -36,10 +36,10 @@ module.exports = {
 
           }
           save(alias, "alias")
-          message.channel.send(`Added "${new_alias}" to ${command}'s aliases'.`)
+          await message.channel.send(`Added "${new_alias}" to ${command}'s aliases'.`)
         }
-        else message.channel.send(`${new_alias} already exists as an alias or command or skill.`)
+        else await message.channel.send(`${new_alias} already exists as an alias or command or skill.`)
       }
-      else message.channel.send("That command doesn't exist.")
+      else await message.channel.send("That command doesn't exist.")
     }
 }

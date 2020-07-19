@@ -6,7 +6,7 @@ module.exports = {
   desc: "Lists custom data.",
   args: true,
   args_length: 1,
-  execute(message, args) {
+  async execute(message, args) {
     args = args.shift()
     let send = {title: `Data > ${args.charAt(0).toUpperCase()+args.substr(1)}`}
     switch (args) {
@@ -40,7 +40,7 @@ module.exports = {
         break;
       case "items":
       if (items.length) {
-          send.description = "```\n" + items.map(item => `${item.charAt(0).toUpperCase()+item.substr(1)}:\n${skill.desc}`).toString().replace(/,/g, "\n\n") +"```"
+          send.description = "```\n" + items.map(item => `${item.title}:\n${item.desc}`).toString().replace(/,/g, "\n\n") +"```"
         } else {
           send.description = "```No items registered.```"
         }
@@ -49,6 +49,6 @@ module.exports = {
         console.log(`${args} is not part of global data.`);
         return
     }
-    message.channel.send({embed: send})
+    await message.channel.send({embed: send})
   }
 }

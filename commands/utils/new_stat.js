@@ -22,7 +22,7 @@ module.exports = {
         })
         save(members, "members")
         save(player_stats, "player_stats", location="config.json")
-        message.channel.send("Updated all stats.")
+        await message.channel.send("Updated all stats.")
       }
     }
   }

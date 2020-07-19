@@ -6,6 +6,7 @@ const Skill = require('./components/skill.js')
 const MultiSkill = require('./components/multi_skill.js')
 const Item = require('./components/item.js')
 const {prefix, token, player_stats} = require('./config.json');
+const {MessageEmbed} = require('discord.js');
 
 // Declare Variables here
 var members = [];
@@ -39,6 +40,9 @@ function load(item, key_name) {
           return
         case "buffs":
           Object.assign(item, data[key_name].map(item => Buff.load(item)))
+          return
+        case "items":
+          Object.assign(item, data[key_name].map(item => Item.load(item)))
           return
         default:
           Object.assign(item, data[key_name])
@@ -98,8 +102,43 @@ function validate_command_name(input) {
   } else return true
 }
 
+function member_embed(character, guild, info=false) {
+  let embed = new MessageEmbed()
+  let owner = guild.members.cache.get(character.player_id)
+
+  embed.setAuthor(character.title, (owner) ? owner.user.avatarURL() : "")
+  embed.addField(":crossed_swords: Stats", character.get_stats(true))
+  if (character.buffs.length) embed.addField(":exclamation: Status Ailments", character.print_buffs())
+  return embed
+}
+
+function item_embed(item, info=false) {
+  let embed = new MessageEmbed()
+  embed.setTitle(item.title)
+  embed.setDescription(item.desc)
+  if (item.buffs.length) embed.addField(":exclamation:Buffs", item.get_buffs(true))
+  return embed
+}
+
+function buff_embed(buff, info=false) {
+  let embed = new MessageEmbed()
+  embed.setTitle(buff.title)
+  embed.setDescription(buff.desc)
+  let stats = buff.get_stats()
+  if (Object.keys(stats).some(item => stats[item] != 0)) embed.addField(":exclamation:Stat Changes", buff.get_stats(true))
+  return embed
+}
+
+function skill_embed(skill, info=false) {
+  let embed = new MessageEmbed()
+  embed.setTitle(skill.title)
+  embed.setDescription(skill.desc)
+  return embed
+}
+
+
 // Export for global usage
 module.exports = {
   members, skills, alias, buffs, items, save, save_all, load, get_alias,
-  prefix, token, validate_command_name
+  prefix, token, validate_command_name, member_embed, item_embed, buff_embed, skill_embed
 }

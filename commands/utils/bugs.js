@@ -2,7 +2,7 @@ module.exports = {
     name: "bugreport",
     desc: "Bug reporting help.",
     args: false,
-    execute(message, args) {
+    async execute(message, args) {
       const embed = {
         "description": "> Before reporting a new issue, please check the [following link](https://github.com/cafne/DiscordJSTest/issues) to ensure it isn't already being worked on.",
         "color": 5488632,
@@ -22,6 +22,6 @@ module.exports = {
           }
         ]
       }
-      message.channel.send({embed: embed})
+      await message.channel.send({embed: embed})
     }
 }

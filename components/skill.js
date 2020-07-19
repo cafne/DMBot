@@ -9,11 +9,12 @@ module.exports = {
     self.dice_num = 0
     self.dice_sides = 0
     self.stats = []
-    self.buff = []
+    self.buffs = []
     self.bufftime = "before"
     self.buffonce = true
     self.desc = ""
-    self.icon = ""
+    self.icon = "",
+    self.target = false
 
     return self.update(self, kwargs)
   },
@@ -41,8 +42,8 @@ module.exports = {
     let result = {roll:{}, stats: {}}
 
     // Apply the pre-skill stat buff
-    if (this.buff.length && this.bufftime == "before") {
-      this.buff.forEach((item) => {
+    if (this.buffs.length && this.bufftime == "before") {
+      this.buffs.forEach((item) => {
         item.apply(player)
       })
     }
@@ -60,15 +61,15 @@ module.exports = {
     }
 
     // Remove the pre-skill buff if its not persistent
-    if (this.buff.length && this.buffonce && this.bufftime == "before") {
-      this.buff.forEach((item) => {
+    if (this.buffs.length && this.buffonce && this.bufftime == "before") {
+      this.buffs.forEach((item) => {
         item.remove(player)
       })
     }
 
     // Apply the post-skill buff effect
-    if (this.buff && this.bufftime == "after") {
-      this.buff.forEach((item) => {
+    if (this.buffs && this.bufftime == "after") {
+      this.buffs.forEach((item) => {
         item.apply(player)
       })
     }
@@ -86,7 +87,7 @@ module.exports = {
 
   load : function(kwargs) {
     self = this.create(kwargs)
-    self.buff = kwargs["buff"].map(item => Buff.create(kwargs["buffs"]))
+    self.buff = kwargs["buffs"].map(item => Buff.create(kwargs["buffs"]))
     return self;
   }
 }

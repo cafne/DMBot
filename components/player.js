@@ -17,7 +17,7 @@ module.exports = {
     self.name = kwargs["name"]
 
     // Lazy default values.
-    self.player_id = (kwargs.hasOwnProperty("player_id")) ? kwargs["player_id"] : ""
+    self.player_id = (kwargs.hasOwnProperty("player_id")) ? kwargs["player_id"].toString() : ""
 
     if (player_stats.length) {
       player_stats.forEach((item) => {
@@ -33,7 +33,7 @@ module.exports = {
   },
 
   get_stats: function(pretty_print=false) {
-    final = {}
+    let final = {}
     player_stats.forEach((item) => {
       final[item] = this[item]
     });
@@ -44,8 +44,18 @@ module.exports = {
     return final
   },
 
+  print_buffs: function() {
+    let final = ""
+    this.buffs.forEach((item) => {
+      final += `${item.title}\`\`\`\n${item.short_desc}\`\`\`\n`
+    });
+    return final
+  },
+
   equip: function(buff, stack=1) {
-    if (!this.buffs.includes(buff)){
+    buff = Buff.create(buff)
+    find = this.buffs.find(item => item.name == buff.name)
+    if (!find){
       try {
         buff.stack = stack
         buff.apply(this)
@@ -55,8 +65,8 @@ module.exports = {
       }
       this.buffs.push(buff)
     } else {
-      buff = this.buffs.indexOf(buff)
-      this.buffs[buff].stack += stack
+      this.buffs[this.buffs.indexOf(find)].stack += stack
+      this.buffs[this.buffs.indexOf(find)].reapply(this)
     }
   },
 
@@ -64,14 +74,30 @@ module.exports = {
     return this.name.charAt(0).toUpperCase() + this.name.substr(1)
   },
 
-  unequip: function(buff) {
-    let find = this.buffs.indexOf(buff)
-    if (find == -1) {
+  unequip_all: function() {
+    this.buffs.forEach((buff) => {
+      buff.remove(this)
+    });
+    this.buffs.splice(0, this.buffs.length)
+    for (let stat of player_stats) {
+      this[stat].remove_all_from_source(null)
+    }
+  },
+
+  unequip: function(buff, stack=1) {
+    let find = this.buffs.find(item => buff.name == item.name)
+    if (!find) {
       console.log("Buff does not exist.")
       return false
     }
-    buff.remove(this)
-    this.buffs.splice(buff, 1)
+    find = this.buffs.indexOf(find)
+    this.buffs[find].stack -= stack
+    if (this.buffs[find].stack <= 1) {
+      this.buffs[find].remove(this)
+      this.buffs.splice(find, 1)
+    } else {
+      this.buffs[find].reapply(this)
+    }
   },
 
   load: function(kwargs) {
