@@ -66,7 +66,6 @@ module.exports = function args_parse(args, firstIsSingle=true, options={}, singl
           final[key] = false
         } else {
           final[key] = val
-          break;
         }
       }
     } else if (singlesKey) {

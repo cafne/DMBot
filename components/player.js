@@ -32,6 +32,15 @@ module.exports = {
     return self;
   },
 
+  update: function(self, kwargs) {
+    for (let prop of Object.keys(kwargs)) {
+      if (Object.keys(self).includes(prop)){
+        self[prop] = kwargs[prop]
+      }
+    }
+    return self
+  },
+
   get_stats: function(pretty_print=false) {
     let final = {}
     player_stats.forEach((item) => {
