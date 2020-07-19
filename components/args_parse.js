@@ -56,21 +56,17 @@ module.exports = function args_parse(args, firstIsSingle=true, options={}, singl
             return false
           }
       } else {
-        switch (val) {
-          case !val:
+        if (!val) {
             return false
-          case Number(val):
-            final[key] = Number(val)
-            break;
-          case val.toLowerCase() == "true":
-            final[key] = true
-            break;
-          case val.toLowerCase() == "false":
-            final[key] = false
-            break;
-          default:
-            final[key] = val
-            break;
+        } else if (!isNaN(val)) {
+          final[key] = Number(val)
+        } else if (val.toLowerCase() == "true") {
+          final[key] = true
+        } else if (val.toLowerCase() == "false") {
+          final[key] = false
+        } else {
+          final[key] = val
+          break;
         }
       }
     } else if (singlesKey) {

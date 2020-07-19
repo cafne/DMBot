@@ -11,6 +11,7 @@ module.exports = {
   usage: "!newbuff <name> >" +
          "desc: <description>" +
          "str/int/hp/dex: <number>",
+  admin: true,
 
   async execute(message, args) {
 

@@ -7,6 +7,7 @@ module.exports = {
   desc: "Deletes a registered buff.",
   args: true,
   args_length: 1,
+  admin: true,
   async execute(message, args) {
     let buff = buffs.find(buff => buff.name == args[0])
     if (buff) {

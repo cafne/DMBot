@@ -23,7 +23,6 @@ module.exports = {
           character[key].remove_all_from_source(null)
         } else {
           let buff = buffs.find(item => item.name == key)
-          console.log(buff);
           if (!buff) return `Invalid named buff: ${key}`
           character.unequip(buff)
         }

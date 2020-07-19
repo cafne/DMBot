@@ -25,7 +25,7 @@ module.exports = {
     }
 
     // Early exit if there is a character with the same name
-    if (members.some(member => member.name == character)){
+    if (members.some(member => member.name == character.name)){
       return await message.channel.send("```That character already exists!```")
     }
 

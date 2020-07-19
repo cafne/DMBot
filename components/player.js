@@ -92,7 +92,7 @@ module.exports = {
     }
     find = this.buffs.indexOf(find)
     this.buffs[find].stack -= stack
-    if (this.buffs[find].stack <= 1) {
+    if (this.buffs[find].stack < 1) {
       this.buffs[find].remove(this)
       this.buffs.splice(find, 1)
     } else {

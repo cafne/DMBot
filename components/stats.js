@@ -105,7 +105,7 @@ module.exports = {
 
   get_final_value: function() {
     if (this.modifiers.length >= 1) {
-      var final = this.modifiers.slice(0)
+      var final = this.modifiers
       if (final.length > 1) {
         final = final.map(item => item.value).reduce((first, next) => first + next)
         return final + this.base_val
