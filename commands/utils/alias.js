@@ -6,6 +6,7 @@ module.exports = {
     desc: "Adds a new alias to a command.",
     args: true,
     args_length: 2,
+    admin: true,
     usage: "!alias <command> <new_alias>",
     async execute(message, args) {
 

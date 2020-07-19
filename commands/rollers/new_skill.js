@@ -9,6 +9,7 @@ module.exports = {
   name: "newskill",
   desc: "Adds a new skill to the skill list.",
   args: true,
+  admin: true,
   usage: "!newskill <skill_name> >" +
          "(optional) dice: <no. of dice>d<no. of sides>," +
          "desc: <description of skill> (use 'name' as a placeholder for character name)"+

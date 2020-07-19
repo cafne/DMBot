@@ -5,7 +5,7 @@ const Buff = require('./components/buff.js')
 const Skill = require('./components/skill.js')
 const MultiSkill = require('./components/multi_skill.js')
 const Item = require('./components/item.js')
-const {prefix, token, player_stats} = require('./config.json');
+const {prefix, token, player_stats, admin_roles} = require('./config.json');
 const {MessageEmbed} = require('discord.js');
 
 // Declare Variables here
@@ -172,5 +172,5 @@ function lookup(search, filter=[]) {
 // Export for global usage
 module.exports = {
   members, skills, alias, buffs, items, sent_emoji, save, save_all, load, get_alias,
-  prefix, token, validate_command_name, member_embed, item_embed, buff_embed, skill_embed, lookup
+  prefix, admin_roles, token, validate_command_name, member_embed, item_embed, buff_embed, skill_embed, lookup
 }

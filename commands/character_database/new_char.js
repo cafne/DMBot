@@ -9,6 +9,7 @@ module.exports = {
   desc: "Creates new character.",
   usage: "!newchar <name> > int/str/dex/hp: <value>, player_id: <value>",
   args: true,
+  admin: true,
   async execute(message, args) {
 
     // Unpack arguments and try to create the character

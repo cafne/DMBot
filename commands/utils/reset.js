@@ -5,8 +5,9 @@ const confirm_message = require('../../components/confirm_message.js')
 
 module.exports = {
   name: "reset",
-  desc: "",
+  desc: "Resets all data.",
   args: true,
+  admin: true,
   async execute(message, args) {
     if (args.includes("all")) {
       args = ["alias", "items", "members", "skills", "buffs", "player_stats"]

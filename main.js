@@ -35,7 +35,7 @@ for (const file of emojiFiles) {
 }
 
 var {members, skills, items, sent_emoji, save, load, alias, get_alias,
-	buffs, prefix, token} = require('./globals.js')
+	buffs, prefix, token, admin_roles} = require('./globals.js')
 
 load(alias, "alias")
 load(skills, "skills")
@@ -81,11 +81,14 @@ client.on('message', msg => {
 			if (!command) return;
 		} else args.push(commandName)
 
-		// TODO: Switch to guild member to check roles when deployed.
-		/*
-		if (command.admin == true && msg.guild.member(msg.user)) {
+		// Check if the command is admin only
+		if (command.hasOwnProperty("admin")) {
+			// Check if the user is an admin; as defined by the guild role flag "ADMINSTRATOR" or config.admin_roles
+			if (command.admin == true && !msg.member.roles.cache.find(item => admin_roles.includes(item.name)) &&
+			!msg.member.hasPermission("ADMINISTRATOR")) {
+				return msg.channel.send(`You don't have the permissions for that command, ${msg.author}!`)
+			}
 		}
-		*/
 
     // Used with the [command's <args> property] to check for the appropriate command arguments
     // If the command expects arguments but the <args> list is empty, cancel

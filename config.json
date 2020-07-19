@@ -1,4 +1,12 @@
 {
   "prefix": "!",
-  "token": "MyToken"
+  "token": "MyToken",
+  "player_stats": [
+    "hp",
+    "int",
+    "dex",
+    "cha",
+    "str"
+  ],
+  "admin_roles": []
 }

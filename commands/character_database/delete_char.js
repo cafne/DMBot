@@ -7,6 +7,7 @@ module.exports = {
   desc: "Deletes a character.",
   args: true,
   args_length: 1,
+  admin: true,
   async execute(message, args) {
     let character = members.find(character => character.name == args[0])
     if (character) {

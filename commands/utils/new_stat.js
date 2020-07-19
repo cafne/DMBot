@@ -8,6 +8,7 @@ module.exports = {
     name: "newstat",
     desc: "Creates a new Stat and assigns it to all characters.",
     args: true,
+    admin: true,
     async execute(message, args) {
       args = args.filter((item, i, self) => {
         return !player_stats.includes(item.toLowerCase()) && self.indexOf(item) == i
