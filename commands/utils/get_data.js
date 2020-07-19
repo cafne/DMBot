@@ -1,4 +1,4 @@
-const {save_all, members, alias, skills} = require('../../globals.js')
+const {save_all} = require('../../globals.js')
 const Discord = require('discord.js');
 
 module.exports = {

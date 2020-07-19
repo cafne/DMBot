@@ -41,5 +41,13 @@ module.exports = {
 
     }
     return
+  },
+
+  load: function(kwargs) {
+    self = this.create(kwargs)
+    self.buffs.forEach((item) => {
+      Buff.create(item)
+    });
+    return self
   }
 }

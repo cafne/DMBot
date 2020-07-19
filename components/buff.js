@@ -47,8 +47,8 @@ module.exports = {
 
   apply: function(player) {
     Object.getOwnPropertyNames(this).forEach((key) => {
-      if (!["name", "desc", "icon", "stack"].includes(key)) {
-        player[key].add_modifier(StatModifier.create(this[key] * this.stack, source=this))
+      if (!["name", "desc", "icon", "stack"].includes(key) && this[key] != 0) {
+        player[key].add_modifier(StatModifier.create(this[key] * this.stack, source=this.name))
       }
     });
   },
@@ -56,7 +56,7 @@ module.exports = {
   remove: function(player) {
     Object.getOwnPropertyNames(this).forEach((key) => {
       if (!["name", "desc", "icon", "stack"].includes(key)) {
-        player[key].remove_all_from_source(this)
+        player[key].remove_all_from_source(this.name)
       }
     });
   },

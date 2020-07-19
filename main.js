@@ -34,12 +34,14 @@ for (const file of emojiFiles) {
   client.emoji_events.set(emoji.name, emoji);
 }
 
-var {members, skills, save, load, alias, get_alias,
+var {members, skills, items, sent_emoji, save, load, alias, get_alias,
 	buffs, prefix, token} = require('./globals.js')
 
 load(alias, "alias")
 load(skills, "skills")
 load(buffs, "buffs")
+load(items, "items")
+load(sent_emoji, "sent_emoji")
 
 // This holds a list of Players/Characters with stats
 

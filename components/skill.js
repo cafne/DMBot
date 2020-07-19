@@ -74,7 +74,6 @@ module.exports = {
       })
     }
     result.final = 0
-    console.log(result.roll);
     if (Object.getOwnPropertyNames(result.roll).length) {
       result.final += Object.values(result.roll).reduce((first, next) => first + next)
     }

@@ -14,6 +14,7 @@ var skills = [];
 var alias = [];
 var buffs = [];
 var items = [];
+var sent_emoji = {};
 
 // Save and Load functions to be used with "globals.json"
 // Usage: save(variable, key_in_globals.json)
@@ -49,7 +50,6 @@ function load(item, key_name) {
           return
       }
     }
-
   })
 }
 
@@ -95,6 +95,7 @@ function get_alias(input, cmds) {
   return false
 }
 
+// Check if a name exists as a command or alias
 function validate_command_name(input) {
   if (skills.some(item => item.name == input) || commands.includes(input) ||
   alias.some(item => Object.values(item).flat().includes(input))) {
@@ -102,6 +103,7 @@ function validate_command_name(input) {
   } else return true
 }
 
+// Start Embeds //
 function member_embed(character, guild, info=false) {
   let embed = new MessageEmbed()
   let owner = guild.members.cache.get(character.player_id)
@@ -136,9 +138,39 @@ function skill_embed(skill, info=false) {
   return embed
 }
 
+// End Embeds //
+
+// Find data is database
+function lookup(search, filter=[]) {
+
+  // Set the default search filters
+  let search_in = {"members": members, "buffs": buffs, "skills": skills, "items": items}
+  let found = undefined
+
+  // Update search filters with <filter>
+  if (filter.length){
+    let filtered = {}
+    Object.keys(search_in).forEach((key) => {
+      if (filter.includes(key)) {
+        filtered[key] = search_in[key]
+      }
+    });
+    search_in = filtered
+  }
+
+  // Look for item
+  for (let key of Object.keys(search_in)) {
+    found = search_in[key].find(item => item.name == search)
+    var found_in_key = key
+    if (found) break;
+  }
+
+  return {item: found, found_in_key, found_in_key}
+}
+
 
 // Export for global usage
 module.exports = {
-  members, skills, alias, buffs, items, save, save_all, load, get_alias,
-  prefix, token, validate_command_name, member_embed, item_embed, buff_embed, skill_embed
+  members, skills, alias, buffs, items, sent_emoji, save, save_all, load, get_alias,
+  prefix, token, validate_command_name, member_embed, item_embed, buff_embed, skill_embed, lookup
 }

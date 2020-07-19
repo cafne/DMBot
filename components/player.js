@@ -121,8 +121,7 @@ module.exports = {
     });
 
     if (kwargs.buffs.length) {
-      self.buffs = kwargs["buffs"].map(item => Buff.create(kwargs["buffs"]))
-      self.buffs.forEach(item => self.equip(item))
+      self.buffs = kwargs["buffs"].map(item => Buff.create(item))
     }
 
     self.inventory = Inventory.create()

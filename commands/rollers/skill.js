@@ -62,6 +62,7 @@ module.exports = {
           }
         ]
       }
+      await message.delete()
       await message.channel.send({embed: embed})
     }
   }
