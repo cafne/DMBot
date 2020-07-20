@@ -13,7 +13,8 @@ module.exports = {
   async execute(message, args) {
 
     // Unpack arguments and try to create the character
-    let character = args_parse(args, true)
+    let character = args_parse(args, true, {player_id: "id"})
+
     character = Player.create(character)
 
     // If any values could not be set, return an error.

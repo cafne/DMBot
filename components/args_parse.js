@@ -48,6 +48,9 @@ module.exports = function args_parse(args, firstIsSingle=true, options={}, singl
               }
               final[key] = val
               break;
+            case "id":
+              final[key] = val
+              break;
             default:
               return false
             }
@@ -57,9 +60,9 @@ module.exports = function args_parse(args, firstIsSingle=true, options={}, singl
           }
       } else {
         if (!val) {
-            return false
+          return false
         } else if (!isNaN(val)) {
-          final[key] = Number(val)
+          final[key] = parseInt(val)
         } else if (val.toLowerCase() == "true") {
           final[key] = true
         } else if (val.toLowerCase() == "false") {

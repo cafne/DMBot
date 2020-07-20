@@ -28,6 +28,8 @@ module.exports = {
 
     let newbuff = Buff.create(args)
 
+    if (buffs.find(buff => buff.name == newbuff.name)) return await message.channel.send(`\`\`\`Error: ${newbuff.title} already exists.\`\`\``)
+
     embed = buff_embed(newbuff)
 
     await message.channel.send({embed:embed})
