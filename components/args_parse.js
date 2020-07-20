@@ -22,7 +22,6 @@ module.exports = function args_parse(args, firstIsSingle=true, options={}, singl
       let key = val.shift().trim().toLowerCase()
       val = val.toString().trim()
 
-
       if (Object.keys(options).includes(key)) {
         try {
           switch (options[key]) {
@@ -40,7 +39,7 @@ module.exports = function args_parse(args, firstIsSingle=true, options={}, singl
               }
               break;
             case "modifier":
-              val = item.replace(/ +/g)
+              val = item.replace(/ +/g, "")
               let find = val.match(/[+-]/)[0]
               val = Number(val.substr(val.indexOf(find)))
               if (!val) {
