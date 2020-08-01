@@ -2,8 +2,7 @@ var fs = require('fs');
 
 const Player = require('./components/player.js')
 const Buff = require('./components/buff.js')
-const Skill = require('./components/skill.js')
-const MultiSkill = require('./components/multi_skill.js')
+const Skill = require('./components/skills/skill.js')
 const Item = require('./components/item.js')
 const {prefix, token, player_stats, admin_roles} = require('./config.json');
 const {MessageEmbed} = require('discord.js');
@@ -26,18 +25,21 @@ function load(item, key_name) {
     if (Object.keys(data).includes(key_name)) {
       switch (key_name) {
         case "members":
-          Object.assign(item, data[key_name].map(item => Player.load(item)))
+          Object.assign(item, data[key_name].map(item => Player.load(item, buffs)))
           return
         case "skills":
+          /*
           let new_data = []
           data[key_name].forEach((skill) => {
-            if (skill.hasOwnProperty("multi")) {
-              new_data.push(MultiSkill.load(skill))
+            if (skill.hasOwnProperty("random")) {
+              new_data.push(ConditionSkill.load(skill))
             } else {
               new_data.push(Skill.load(skill))
             }
           })
           Object.assign(item, new_data)
+          */
+          Object.assign(item, data[key_name].map(item => Skill.load(item, buffs)))
           return
         case "buffs":
           Object.assign(item, data[key_name].map(item => Buff.load(item)))
@@ -56,7 +58,10 @@ function load(item, key_name) {
 function save(item, key_name, location="globals.json") {
   try {
     let data = JSON.parse(fs.readFileSync(location))
-    data[key_name] = item
+    let saving = item.map(i =>
+      (i.hasOwnProperty('save')) ? i.save() : i
+    );
+    data[key_name] = saving
     data = JSON.stringify(data, null, 2)
     fs.writeFileSync(location, data)
   } catch (error) {
@@ -67,7 +72,9 @@ function save(item, key_name, location="globals.json") {
 function save_all() {
   try {
     let data = JSON.parse(fs.readFileSync("globals.json"))
-    data["members"] = members
+    console.log("members", members[0].buffs);
+    data["members"] = members.map(item => item.save())
+
     data["alias"] = alias
     data["items"] = items
     data["buffs"] = buffs
@@ -164,8 +171,11 @@ function lookup(search, filter=[]) {
     var found_in_key = key
     if (found) break;
   }
-
-  return {item: found, found_in_key, found_in_key}
+  if (found) {
+    return {item: found, found_in_key, found_in_key}
+  } else {
+    return false;
+  }
 }
 
 

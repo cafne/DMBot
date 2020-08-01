@@ -31,7 +31,7 @@ module.exports = {
             items.splice(0, items.length)
             break;
           case "player_stats":
-            player_stats.splice(0, player_stats.length)
+            player_stats = {}
             break;
           default:
             console.log(item);

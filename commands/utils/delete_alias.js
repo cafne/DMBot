@@ -5,6 +5,7 @@ module.exports = {
     desc: "Removes an alias from a command.",
     args: true,
     args_length: 2,
+    admin: true,
     usage: "!alias <command> <alias>",
     async execute(message, args) {
 
@@ -17,11 +18,11 @@ module.exports = {
         // Get the command-- if an entry doesn't exist in <alias> add a new entry.
 
         find = alias.find(item => item.hasOwnProperty(command))
-        alias[alias.indexOf(find)][command].splice(rem_alias)
+        find[command].splice(rem_alias)
 
         save(alias, "alias")
-        await message.channel.send(`Added "${new_alias}" to ${command}'s aliases'.`)
+        await message.channel.send(`Removed "${rem_alias}" from ${command}'s aliases'.`)
       }
-      else await message.channel.send(`${new_alias} already exists as an alias or command.`)
+      else await message.channel.send(`${rem_alias} does not exist as an alias or command.`)
     }
 }

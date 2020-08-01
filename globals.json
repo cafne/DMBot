@@ -1,1 +1,329 @@
-{}
+{
+  "members": [
+    {
+      "name": "pink",
+      "player_id": "147481521748574208",
+      "hp": {
+        "name": "HP",
+        "_base_val": 20,
+        "_value": 20,
+        "modifiers": [],
+        "changed": false
+      },
+      "int": {
+        "name": "INT",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": false
+      },
+      "dex": {
+        "name": "DEX",
+        "_base_val": 10,
+        "_value": 10,
+        "modifiers": [],
+        "changed": false
+      },
+      "str": {
+        "name": "STR",
+        "_base_val": 6,
+        "_value": 6,
+        "modifiers": [],
+        "changed": false
+      },
+      "vit": {
+        "name": "VIT",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": false
+      },
+      "cha": {
+        "name": "CHA",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": false
+      },
+      "buffs": [],
+      "dice_buff": {
+        "dice_num": 0,
+        "dice_sides": 0
+      },
+      "inventory": {
+        "items": []
+      }
+    },
+    {
+      "name": "nana",
+      "player_id": "180460162513895424",
+      "hp": {
+        "name": "HP",
+        "_base_val": 20,
+        "_value": 20,
+        "modifiers": [],
+        "changed": false
+      },
+      "int": {
+        "name": "INT",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": false
+      },
+      "dex": {
+        "name": "DEX",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": false
+      },
+      "str": {
+        "name": "STR",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": false
+      },
+      "vit": {
+        "name": "VIT",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": false
+      },
+      "cha": {
+        "name": "CHA",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": false
+      },
+      "buffs": [],
+      "dice_buff": {
+        "dice_num": 0,
+        "dice_sides": 0
+      },
+      "inventory": {
+        "items": []
+      }
+    },
+    {
+      "name": "felis",
+      "player_id": "",
+      "hp": {
+        "name": "HP",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": true
+      },
+      "int": {
+        "name": "INT",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": true
+      },
+      "dex": {
+        "name": "DEX",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": true
+      },
+      "str": {
+        "name": "STR",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": true
+      },
+      "vit": {
+        "name": "VIT",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": true
+      },
+      "cha": {
+        "name": "CHA",
+        "_base_val": 1,
+        "_value": 1,
+        "modifiers": [],
+        "changed": true
+      },
+      "buffs": [],
+      "dice_buff": {
+        "dice_num": 0,
+        "dice_sides": 0
+      },
+      "inventory": {
+        "items": []
+      }
+    }
+  ],
+  "alias": [
+    {
+      "status": [
+        "s"
+      ]
+    }
+  ],
+  "items": [],
+  "buffs": [
+    {
+      "name": "poisoned",
+      "icon": "☠️",
+      "desc": "HP down",
+      "hp": -5,
+      "int": 0,
+      "dex": 0,
+      "str": 0,
+      "vit": 0,
+      "cha": 0,
+      "stack": 1
+    },
+    {
+      "name": "bleeding",
+      "icon": ":knife:",
+      "desc": "",
+      "hp": -3,
+      "int": 0,
+      "dex": 0,
+      "str": 0,
+      "vit": 0,
+      "cha": 0,
+      "stack": 1
+    }
+  ],
+  "skills": [
+    {
+      "name": "attack",
+      "desc": "name lays waste upon target!",
+      "icon": ":crossed_swords:",
+      "abilities": [
+        {
+          "status_effects": [],
+          "modifier_effects": {
+            "hp": {
+              "value": -2,
+              "source": "damage"
+            }
+          },
+          "conditions": [
+            {
+              "type": "target",
+              "user_stats": [
+                "dex"
+              ],
+              "dice_num": 1,
+              "dice_sides": 8,
+              "target_stats": [
+                "dex"
+              ],
+              "compare_dice_sides": 4,
+              "compare_dice_num": 2
+            }
+          ],
+          "target": "target",
+          "type": "attack",
+          "dmg_stat": "hp",
+          "atk_stat": "str",
+          "def_stat": "vit",
+          "crit_stat": "int"
+        }
+      ],
+      "self_target": false
+    },
+    {
+      "name": "perception",
+      "desc": "name takes a look around.",
+      "icon": ":eye:",
+      "abilities": [
+        {
+          "status_effects": [],
+          "modifier_effects": {},
+          "conditions": [
+            {
+              "dice_num": 2,
+              "dice_sides": 4,
+              "user_stats": [
+                "int"
+              ]
+            }
+          ],
+          "target": "self",
+          "type": "status"
+        }
+      ],
+      "self_target": true
+    },
+    {
+      "name": "rend",
+      "desc": "name slashes into target!",
+      "icon": ":skull:",
+      "abilities": [
+        {
+          "status_effects": [],
+          "modifier_effects": {
+            "hp": {
+              "value": 3,
+              "source": {
+                "dice_num": 0,
+                "dice_sides": 0
+              }
+            }
+          },
+          "conditions": [],
+          "target": "self",
+          "type": "status"
+        },
+        {
+          "status_effects": [
+            {
+              "name": "bleeding",
+              "icon": ":knife:",
+              "desc": "",
+              "hp": -3,
+              "int": 0,
+              "dex": 0,
+              "str": 0,
+              "vit": 0,
+              "cha": 0,
+              "stack": 1
+            }
+          ],
+          "modifier_effects": {},
+          "conditions": [
+            {
+              "type": "target",
+              "user_stats": [
+                "dex"
+              ],
+              "dice_num": 1,
+              "dice_sides": 6,
+              "target_stats": [
+                "dex"
+              ],
+              "compare_dice_sides": 6,
+              "compare_dice_num": 1
+            }
+          ],
+          "target": "target",
+          "type": "attack",
+          "dmg_stat": "hp",
+          "atk_stat": "str",
+          "def_stat": "vit",
+          "crit_stat": "int"
+        }
+      ],
+      "self_target": false
+    }
+  ],
+  "sent_emoji": {
+    "147481521748574208": {
+      "dead": 13
+    }
+  }
+}

@@ -1,3 +1,6 @@
+// Deprecated. To test skills edit the .JSON and !reload the bot
+
+/*
 var { skills, buffs, alias } = require('../../globals.js')
 const { player_stats } = require('../../config.json')
 const { save, validate_command_name } = require('../../globals.js')
@@ -46,3 +49,4 @@ module.exports = {
     await message.channel.send(`Created new skill ${new_skill.name.charAt(0).toUpperCase()+new_skill.name.substr(1)}`)
   }
 }
+*/

@@ -1,12 +1,13 @@
 {
   "prefix": "!",
   "token": "MyToken",
-  "player_stats": [
-    "hp",
-    "int",
-    "dex",
-    "cha",
-    "str"
-  ],
+  "player_stats": {
+    "hp": "dmg_stat",
+    "int": "crit_stat",
+    "dex": null,
+    "str": "atk_stat",
+    "vit": "def_stat",
+    "cha": null
+  },
   "admin_roles": []
 }

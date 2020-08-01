@@ -1,13 +1,10 @@
 var {members, skills, save} = require('../../globals.js')
-const Player = require('../../components/player.js')
-const Skill = require('../../components/skill.js');
-const Buff = require('../../components/buff.js')
-
+const DiceBuff = require('../../components/dice_buff.js');
 module.exports = {
   name: "skill",
   desc: "preforms dice roll",
   args: false,
-  args_length: 2,
+
   get_alias(cmd) {
     if (skills.length) {
       if (skills.map(item => item.name).includes(cmd)) {
@@ -16,54 +13,77 @@ module.exports = {
     }
     return false
   },
+
   async execute(message, args) {
-    if (!args.length) {
-      return
-    }
-    else {
-      if (args.length == 2) {
-        var character = members.find(character => character.name == args[0])
-        var skill = skills.find(skill => skill.name == args[1])
-      } else if (args.length == 1) {
-        var character = members.find(character => character.player_id == message.author.id)
-        var skill = skills.find(skill => skill.name == args[0])
-      } else return await message.channel.send("Please specify a skill and character.")
+    
+    // Unpack different forms of arguments
 
-      if (!character || !skill) return
+    if (args[0].includes(">")) {
 
-      // Use the skill
-      let result = skill.use(character)
+      // This format is used for specifying both the user and the target(s).
+      // expected input: !attack <user> > <target>
 
-      // Start Embed building
-      let character_name = character.name.charAt(0).toUpperCase() + character.name.substr(1)
-      let title = skill.title
-      let footer = `${Object.values(result.roll).toString().replace(/,/g, " + ")}`
+      var character = args[0].substr(0, args[0].indexOf(">")).trim()
+      character = members.find(char => char.name == character)
+      args[0] = args[0].substr(args[0].indexOf(">")+1).trim()
+      var skill = args.pop()
+      skill = skills.find(item => item.name == skill)
+      var target = args
+      target.forEach((item, i) => {
+        target[i] = members.find(char => char.name == item)
+      });
+    } else if (args.length > 1) {
 
-      for (var i = 0; i < Object.keys(result.stats).length; i++) {
-        if (i > 0 || footer) footer += " + "
-        footer += `${result.stats[Object.keys(result.stats)[i]]} (${Object.keys(result.stats)[i].toUpperCase()})`
+      // This format is used when only a user or target(s) are specified
+      // expected input: !attack <target1>, <target2>, <ect...>
+
+      // First we get the skill
+      var skill = args.pop()
+      skill = skills.find(s => s.name == skill)
+
+      // Then we check if the Player using the skill has a registered character.
+      // If we do, we assume that character is the one using the skill.
+      var character = members.find(character => character.player_id == message.author.id)
+
+      if (!character) {
+        // Early exit if we cannot find a character to use the skill.
+        return
+      } else {
+        // All characters mentioned in the command are targets.
+        var target = []
+        for (let item of args) {
+          let find = members.find(member => item == member.name)
+          if (!find) return
+          target.push(find)
+        }
       }
+    } else if (args.length == 1) {
 
-      let embed = {
-        "title": title,
-        "description": skill.get_desc(character),
-        "color": 12042918,
-        "footer": {
-          "text": footer
-        },
-        "author": {
-          "name": `${character_name} > Use Skill`,
-          "icon_url": message.author.avatarURL()
-        },
-        "fields": [
-          {
-            "name": ":game_die:",
-            "value": `Rolled a ${result.final}`
-          }
-        ]
+      // This format is for when no characters are specified
+      // expected input: !attack
+
+      // We assume both the user and target of the skill are the Player's registered character
+      var character = members.find(character => character.player_id == message.author.id)
+      var target = [character]
+      var skill = skills.find(skill => skill.name == args[0])
+    } else return await message.channel.send("Please specify a skill and character.")
+
+    // If any data could not be parsed exit
+    if (!character || !skill) return console.log(character, skill, target, "not found");
+
+    // Use the skill on each target
+    //character.equip(DiceBuff.create({dice_num:0, dice_sides: 100}))
+    for (let t of target) {
+      let use = skill.use(character, t)
+      if (!use) return
+      message.channel.startTyping()
+      for (let i of use) {
+        if (i.author.icon_url) {
+          i.author.icon_url = message.guild.members.cache.get(i.author.icon_url).user.avatarURL()
+        }
+        await message.channel.send({embed: i})
       }
-      await message.delete()
-      await message.channel.send({embed: embed})
     }
+    await message.channel.stopTyping()
   }
 }

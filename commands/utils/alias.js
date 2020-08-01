@@ -33,7 +33,7 @@ module.exports = {
           else {
 
             // Otherwise add to the existing entry's list of aliases.
-            alias[alias.indexOf(find)][command].push(new_alias)
+            find[command].push(new_alias)
 
           }
           save(alias, "alias")

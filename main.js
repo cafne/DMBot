@@ -34,19 +34,16 @@ for (const file of emojiFiles) {
   client.emoji_events.set(emoji.name, emoji);
 }
 
-var {members, skills, items, sent_emoji, save, load, alias, get_alias,
-	buffs, prefix, token, admin_roles} = require('./globals.js')
-
+var {buffs, members, skills, items, sent_emoji, save, load, alias, get_alias,prefix, token, admin_roles} = require('./globals.js')
+load(buffs, "buffs")
 load(alias, "alias")
 load(skills, "skills")
-load(buffs, "buffs")
 load(items, "items")
 load(sent_emoji, "sent_emoji")
 
 // This holds a list of Players/Characters with stats
 
 load(members, "members")
-
 // Start Bot //
 
 client.on('ready', () => {
@@ -104,6 +101,7 @@ client.on('message', msg => {
 
     try {
       command.execute(msg, args);
+			msg.delete()
     } catch (error) {
       console.error(error);
       msg.reply('there was an error trying to execute that command!');

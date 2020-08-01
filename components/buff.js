@@ -28,7 +28,7 @@ module.exports = {
     self.desc = ""
 
     // Additive modifiers
-    player_stats.forEach((item) => {
+    Object.keys(player_stats).forEach((item) => {
       self[item] = 0
     });
     self.stack = 1
@@ -50,7 +50,7 @@ module.exports = {
       if (!["name", "desc", "icon", "stack"].includes(key) && this[key] != 0) {
         player[key].add_modifier(StatModifier.create(this[key] * this.stack, source=this.name))
       }
-    });
+    })
   },
 
   remove: function(player) {

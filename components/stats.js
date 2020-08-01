@@ -49,6 +49,14 @@ module.exports = {
     return self;
   },
 
+  get buffed_value() {
+    let val = this.modifiers.filter(item =>
+      item.source != "damage").map(item =>
+        item.value).reduce((first, next) =>
+        first + next, this.base_val)
+    return val
+  },
+
   get value() {
     if (this.changed == true) {
       this._value = this.get_final_value()
@@ -68,17 +76,12 @@ module.exports = {
   },
 
   add_modifier: function(mod) {
-    if (typeof mod == 'number') {
-      var index = this.modifiers.findIndex(item => item.source == null)
-      if (index == -1) {
-        this.modifiers.push(StatModifier.create(mod))
-      }
-      else {
-        this.modifiers[index].value += mod
-      }
-    }
-    else {
-      this.modifiers.push(mod)
+    let new_mod = (typeof mod == 'number') ? StatModifier.create(mod) : Object.assign(StatModifier.create(0), mod)
+    var index = this.modifiers.findIndex(item => item.source == new_mod.source)
+    if (index == -1) {
+      this.modifiers.push(new_mod)
+    } else {
+      this.modifiers[index].value += new_mod.value
     }
     this.changed = true
   },
@@ -88,10 +91,12 @@ module.exports = {
   remove_modifier: function(mod) {
     if (this.modifiers.includes(mod)) {
       this.modifiers.splice(this.modifiers.indexOf(mod), 1)
-      this.changed = true
       return true
     }
-    else return false
+    else {
+      this.changed = true
+      return false
+    }
   },
 
   remove_all_from_source: function(source) {
@@ -100,7 +105,9 @@ module.exports = {
       this.changed = true
       return true
     }
-    else return false
+    else {
+      return false
+    }
   },
 
   get_final_value: function() {

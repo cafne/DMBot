@@ -19,7 +19,7 @@ module.exports = {
 
     if (args[0] != "all") {
       for (let key of args) {
-        if (player_stats.includes(key)) {
+        if (Object.keys(player_stats).includes(key)) {
           character[key].remove_all_from_source(null)
         } else {
           let buff = buffs.find(item => item.name == key)

@@ -2,7 +2,8 @@ const {player_stats} = require('../config.json')
 const Inventory = require('./inventory.js')
 const Stat = require('./stats.js')
 const Item = require('./item.js')
-const Buff = require('./buff.js')
+const Buff =  require('./buff.js')
+const DiceBuff = require('./dice_buff.js')
 
 /*
   // Start Player //
@@ -19,14 +20,18 @@ module.exports = {
     // Lazy default values.
     self.player_id = (kwargs.hasOwnProperty("player_id")) ? kwargs["player_id"].toString() : ""
 
-    if (player_stats.length) {
-      player_stats.forEach((item) => {
+    if (Object.keys(player_stats).length) {
+      Object.keys(player_stats).forEach((item) => {
         self[item] = (kwargs.hasOwnProperty(item)) ? Stat.create(item.toUpperCase(),
         kwargs[item]) : Stat.create(item.toUpperCase(), 1)
       });
     }
 
     self.buffs = []
+    self.dice_buff = DiceBuff.create({
+      dice_num: kwargs.dice_num || 0,
+      dice_sides: kwargs.dice_sides || 0
+    })
     self.inventory = Inventory.create()
 
     return self;
@@ -43,12 +48,14 @@ module.exports = {
 
   get_stats: function(pretty_print=false) {
     let final = {}
-    player_stats.forEach((item) => {
+    Object.keys(player_stats).forEach((item) => {
       final[item] = this[item]
     });
     if (pretty_print) {
       final = Object.getOwnPropertyNames(final).map(item =>
-        `${item.toUpperCase()}: ${final[item].value}\n`).toString().replace(/,/g, "").trim()
+        `${item.toUpperCase()}: ${final[item].value}${(final[item].modifiers.find(item =>
+          item.source == "damage")) ? " / " + final[item].buffed_value: ""}\n`
+      ).toString().replace(/,/g, "").trim()
     }
     return final
   },
@@ -56,26 +63,30 @@ module.exports = {
   print_buffs: function() {
     let final = ""
     this.buffs.forEach((item) => {
-      final += `${item.title}\`\`\`\n${item.short_desc}\`\`\`\n`
+      final += `${item.title}\n\`\`\`${item.short_desc}\`\`\`\n`
     });
     return final
   },
 
   equip: function(buff, stack=1) {
-    buff = Buff.create(buff)
-    find = this.buffs.find(item => item.name == buff.name)
-    if (!find){
-      try {
-        buff.stack = stack
-        buff.apply(this)
-      } catch (error) {
-        console.log("Error with parsing buffs.")
-        return false
+    if (buff.__proto__ == Buff) {
+      let find = this.buffs.find(item => item.name == buff.name)
+      if (!find){
+        try {
+          let newbuff = Buff.create(buff)
+          newbuff.stack = stack
+          newbuff.apply(this)
+          this.buffs.push(newbuff)
+        } catch (error) {
+          console.log("Error with parsing buffs.")
+          return false
+        }
+      } else {
+        find.stack += stack
+        find.reapply(this)
       }
-      this.buffs.push(buff)
-    } else {
-      this.buffs[this.buffs.indexOf(find)].stack += stack
-      this.buffs[this.buffs.indexOf(find)].reapply(this)
+    } else if (buff.__proto__ == DiceBuff) {
+      this.dice_buff = buff
     }
   },
 
@@ -88,28 +99,51 @@ module.exports = {
       buff.remove(this)
     });
     this.buffs.splice(0, this.buffs.length)
-    for (let stat of player_stats) {
+    for (let stat of Object.keys(player_stats)) {
       this[stat].remove_all_from_source(null)
     }
+    this.dice_buff = null
   },
 
   unequip: function(buff, stack=1) {
-    let find = this.buffs.find(item => buff.name == item.name)
-    if (!find) {
-      console.log("Buff does not exist.")
-      return false
-    }
-    find = this.buffs.indexOf(find)
-    this.buffs[find].stack -= stack
-    if (this.buffs[find].stack < 1) {
-      this.buffs[find].remove(this)
-      this.buffs.splice(find, 1)
-    } else {
-      this.buffs[find].reapply(this)
+    if (buff.__proto__ == Buff) {
+      let find = this.buffs.find(item => buff.name == item.name)
+      if (!find) {
+        console.log("Buff does not exist.")
+        return false
+      }
+      find.stack -= stack
+      if (find.stack < 1) {
+        find.remove(this)
+        this.buffs.splice(this.buffs.indexOf(find), 1)
+      } else {
+        find.reapply(this)
+      }
+    } else if (buff.__proto__ == DiceBuff) {
+      this.dice_buff = null
     }
   },
 
-  load: function(kwargs) {
+  save: function() {
+
+    let save = this.create(this)
+
+    if (Object.keys(player_stats).length) {
+      Object.keys(player_stats).forEach((item) => {
+        Object.assign(save[item], this[item])
+      });
+    }
+
+    this.buffs.forEach((item, i) => {
+      save.buffs[i] = {
+        name: item.name,
+        stack: item.stack
+      }
+    });
+    return save
+  },
+
+  load: function(kwargs, buffs) {
 
     // For JSON unserialization
 
@@ -118,26 +152,51 @@ module.exports = {
     self.player_id = kwargs["player_id"]
     self.name = kwargs["name"]
 
-    player_stats.forEach((item) => {
+    if (kwargs["dice_buff"]) {
+      self.dice_buff = DiceBuff.create(kwargs["dice_buff"])
+    } else {
+      self.dice_buff = DiceBuff.create({dice_sides: 0, dice_num: 0})
+    }
+
+    Object.keys(player_stats).forEach((item) => {
+      self[item] = Stat.create(item.toUpperCase(), 1)
       if (kwargs.hasOwnProperty(item)) {
-        self[item]._base_val = kwargs[item]._base_val
-        self[item]._value = kwargs[item]._value
+        if (!Number(kwargs[item]._base_val)) {
+          let e =`ERROR PARSING GLOBALS.JSON: ${self.name}: ${item}\nExpected numerical _base_value.\nWARNING: this may cause issues with stat calculation\n`
+          console.error(e)
+        }
+        self[item]._base_val = Number(kwargs[item]._base_val)
         self[item].modifiers = kwargs[item].modifiers
-        self[item].changed = kwargs[item].changed
-      } else {
-        self[item]._base_val = self[item]._value = self[item].modifiers = self[item].changed = 1
+        self[item].changed = true
       }
     });
 
     if (kwargs.buffs.length) {
-      self.buffs = kwargs["buffs"].map(item => Buff.create(item))
+      kwargs["buffs"].forEach((item, i) => {
+        let buff = buffs.find(buff => buff.name == item.name)
+        if (buff) {
+          let add_buff = Buff.create(buff)
+          let has_buff = false
+          for (let key of Object.keys(add_buff.get_stats())) {
+            if (self[key].modifiers.find(k => k.source == add_buff.name)) {
+              has_buff = true
+              break;
+            }
+          }
+          if (!has_buff) {
+            self.equip(add_buff, kwargs.buffs[i].stack)
+          } else {
+            add_buff.stack = kwargs.buffs[i].stack
+            self.buffs.push(add_buff)
+          }
+        }
+      })
     }
 
     self.inventory = Inventory.create()
     if (kwargs.inventory.items.length) {
       self.inventory.items = kwargs.inventory.items.map(item => Item.create(kwargs))
     }
-
     return self;
   }
 }

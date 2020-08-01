@@ -17,7 +17,7 @@ module.exports = {
 
     // Unpack arguments: for options explaination see /components/args_parse.js
     let mods = {}
-    player_stats.forEach((item) => {
+    Object.keys(player_stats).forEach((item) => {
       mods[item] = "modifier"
     });
 

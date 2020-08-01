@@ -14,7 +14,7 @@ module.exports = {
     // !buff character > poisoned, downed
     // !buff character > buffs: poisoned, hp-2, str-2
     let mods = {buffs: "array"}
-    player_stats.forEach((item) => {
+    Object.keys(player_stats).forEach((item) => {
       mods[item] = "modifier"
     });
 
@@ -36,7 +36,7 @@ module.exports = {
     let stat_list = {}
     for (let key of Object.keys(args)) {
       if (!["buffs", "name"].includes(key)) {
-        if (!player_stats.includes(key)) return console.log("Error parsing stat mods.")
+        if (!Object.keys(player_stats).includes(key)) return console.log("Error parsing stat mods.")
         stat_list[key] = StatModifier.create(args[key])
       }
     }
@@ -49,7 +49,6 @@ module.exports = {
       character[item].add_modifier(stat_list[item])
     });
 
-    await message.delete()
     await message.channel.send(`${character.name} got buffed!`)
   }
 }

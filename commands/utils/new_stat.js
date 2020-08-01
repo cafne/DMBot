@@ -11,12 +11,12 @@ module.exports = {
     admin: true,
     async execute(message, args) {
       args = args.filter((item, i, self) => {
-        return !player_stats.includes(item.toLowerCase()) && self.indexOf(item) == i
+        return !Object.keys(player_stats).includes(item.toLowerCase()) && self.indexOf(item) == i
       })
       console.log(args);
       if (await confirm_message(`Add the following stats?\`\`\`\n${args.toString().replace(/,/g, "\n")}\`\`\``, message)) {
         args.forEach((item) => {
-          player_stats.push(item.toLowerCase())
+          Object.assign(player_stats, {[item.toLowerCase()]: null})
           for (var i = 0; i < members.length; i++) {
             members[i][item] = Stat.create(item, 1)
           }
