@@ -35,7 +35,7 @@ module.exports = {
 		}
     user_roll.stats = {}
     this.user_stats.filter(stat => user.hasOwnProperty(stat)).forEach(stat => {
-      user_roll.stats[stat] = user[stat].buffed_value
+      user_roll.stats[stat] = user[stat].value
     });
     user_roll.total = Object.values(user_roll.roll).reduce((first, next) => first + next) + Object.values(user_roll.stats).reduce((first, next) => first + next, 0)
     let target_roll = this.get_target_roll(user, target)

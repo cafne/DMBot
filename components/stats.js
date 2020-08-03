@@ -42,19 +42,33 @@ module.exports = {
   create: function(name, base_val) {
     let self = Object.create(this)
     self.name = name;
+
+    // The original stat value
     self._base_val = base_val;
+
+    // The total stat value
     self._value = base_val;
+
+    // The current stat value
+    self._current_value = base_val
+
     self.modifiers = []
     self.changed = true
     return self;
   },
 
-  get buffed_value() {
-    let val = this.modifiers.filter(item =>
-      item.source != "damage").map(item =>
-        item.value).reduce((first, next) =>
-        first + next, this.base_val)
-    return val
+  get damage() {
+    let dmg = this.modifiers.find(item => item.source == "damage")
+    return (!dmg) ? 0 : dmg.value
+  },
+
+  get current_value() {
+    let val = this._current_value + this.damage
+    if (val < 0) {
+      return 0
+    } else {
+      return val
+    }
   },
 
   get value() {
@@ -81,8 +95,8 @@ module.exports = {
     if (!find) {
       this.modifiers.push(new_mod)
     } else {
-      if (find.source == "damage" && find.value + new_mod.value > this.buffed_value) {
-        find.value = this.buffed_value
+      if (find.source == "damage" && find.value + new_mod.value > this.value) {
+        find.value = this.value
       } else {
         find.value += new_mod.value
       }
@@ -98,12 +112,14 @@ module.exports = {
       return true
     }
     else {
-      this.changed = true
       return false
     }
   },
 
   remove_all_from_source: function(source) {
+    if (source == "damage") {
+      this._current_value = this.value
+    }
     if (this.modifiers.some(item => item.source === source)) {
       this.modifiers = this.modifiers.filter(item => item.source != source)
       this.changed = true
@@ -115,14 +131,8 @@ module.exports = {
   },
 
   get_final_value: function() {
-    if (this.modifiers.length >= 1) {
-      var final = this.modifiers
-      if (final.length > 1) {
-        final = final.map(item => item.value).reduce((first, next) => first + next)
-        return (final + this.base_val >= 0) ? final + this.base_val : 0
-      }
-      else return (final[0].value + this.base_val >= 0) ? final[0].value + this.base_val : 0
-    }
-    else return this.base_val
+    let final = this.modifiers.filter(item => item.source != "damage").map(item =>
+      item.value).reduce((first, next) => first + next, 0)
+    return (final + this.base_val < 0) ? 0 : final + this.base_val
   }
 }

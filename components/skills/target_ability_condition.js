@@ -32,7 +32,7 @@ TargetAbilityCondition.get_target_roll = function(user, target) {
 		target_roll.roll = dice_roller(this.dice_num, this.dice_sides)
 	}
   this.target_stats.filter(stat => target.hasOwnProperty(stat)).forEach(stat => {
-    target_roll.stats[stat] = target[stat].buffed_value
+    target_roll.stats[stat] = target[stat].value
   });
   target_roll.total = Object.values(target_roll.roll).reduce((first, next) =>
 	first + next) + Object.values(target_roll.stats).reduce((first, next) => first + next, 0)

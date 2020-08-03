@@ -6,28 +6,41 @@
       "hp": {
         "name": "HP",
         "_base_val": 20,
-        "_value": 1,
-        "modifiers": [],
+        "_value": 20,
+        "_current_value": 20,
+        "modifiers": [
+          {
+            "value": 3,
+            "source": null
+          },
+          {
+            "value": 3,
+            "source": null
+          }
+        ],
         "changed": true
       },
       "int": {
         "name": "INT",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
       "dex": {
         "name": "DEX",
         "_base_val": 10,
-        "_value": 1,
+        "_value": 10,
+        "_current_value": 10,
         "modifiers": [],
         "changed": true
       },
       "str": {
         "name": "STR",
         "_base_val": 6,
-        "_value": 1,
+        "_value": 6,
+        "_current_value": 6,
         "modifiers": [],
         "changed": true
       },
@@ -35,6 +48,7 @@
         "name": "VIT",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
@@ -42,6 +56,7 @@
         "name": "CHA",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
@@ -60,7 +75,8 @@
       "hp": {
         "name": "HP",
         "_base_val": 20,
-        "_value": 1,
+        "_value": 20,
+        "_current_value": 20,
         "modifiers": [],
         "changed": true
       },
@@ -68,6 +84,7 @@
         "name": "INT",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
@@ -75,6 +92,7 @@
         "name": "DEX",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
@@ -82,6 +100,7 @@
         "name": "STR",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
@@ -89,6 +108,7 @@
         "name": "VIT",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
@@ -96,6 +116,7 @@
         "name": "CHA",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
@@ -115,6 +136,7 @@
         "name": "HP",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
@@ -122,6 +144,7 @@
         "name": "INT",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
@@ -129,6 +152,7 @@
         "name": "DEX",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
@@ -136,6 +160,7 @@
         "name": "STR",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
@@ -143,6 +168,7 @@
         "name": "VIT",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
@@ -150,6 +176,7 @@
         "name": "CHA",
         "_base_val": 1,
         "_value": 1,
+        "_current_value": 1,
         "modifiers": [],
         "changed": true
       },
@@ -264,10 +291,7 @@
           "modifier_effects": {
             "hp": {
               "value": 3,
-              "source": {
-                "dice_num": 0,
-                "dice_sides": 0
-              }
+              "source": null
             }
           },
           "conditions": [],

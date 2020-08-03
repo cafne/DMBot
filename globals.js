@@ -180,6 +180,15 @@ function lookup(search, filter=[]) {
   }
 }
 
+load(buffs, "buffs")
+load(alias, "alias")
+load(skills, "skills")
+load(items, "items")
+load(sent_emoji, "sent_emoji")
+
+// This holds a list of Players/Characters with stats
+
+load(members, "members")
 
 // Export for global usage
 module.exports = {

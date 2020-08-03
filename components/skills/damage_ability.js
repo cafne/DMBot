@@ -60,20 +60,11 @@ DamageAbility.activate = function(user, target) {
 },
 
 DamageAbility.apply = function(user, target) {
-  let dmg = {dmg: 0, crit: false}
 
-  this.status_effects.forEach((item) => {
-    target.equip(item)
-  });
+  let dmg = {dmg: 0, crit: false, skill_dmg: 0}
 
-  // Apply Stat Modifiers and Damage
-  for (let item of Object.keys(this.modifier_effects)) {
-    if (target.hasOwnProperty(item)) {
-      target[item].add_modifier(this.modifier_effects[item])
-    }
-  }
+  // Damage Calculation
 
-  // Apply Buffs
   if (this.dmg_stat && this.atk_stat) {
     if (!user.hasOwnProperty(this.atk_stat) && target.hasOwnProperty(this.dmg_stat)){
       console.log("Warning: damage skill used but target and user do not have attack or damageable stats")
@@ -84,6 +75,18 @@ DamageAbility.apply = function(user, target) {
   } else {
     console.log("Warning: damage skill used but no Attack and Damageable stats were set")
   }
+
+  // Apply Buffs
+  this.status_effects.forEach((item) => {
+    target.equip(item)
+  });
+
+  // Apply Stat Modifiers
+  for (let item of Object.keys(this.modifier_effects)) {
+    if (target.hasOwnProperty(item)) {
+      target[item].add_modifier(this.modifier_effects[item])
+    }
+  }
   return dmg
 }
 
@@ -91,9 +94,8 @@ DamageAbility.make_embed = function(user, target, dmg) {
   let embed = {}
   if (target.hasOwnProperty(this.dmg_stat)) {
     Object.assign(embed, {
-      description: `*${(dmg.crit) ? ":exclamation: Critical hit! :exclamation:\n":""}${-(dmg.dmg + Object.values(this.modifier_effects).filter(
-        item => item.source == "damage"
-      ).map(item => item.value).reduce((first, next) => first + next, 0))} Damage dealt.*`,
+      description: `*${(dmg.crit) ? ":exclamation: Critical hit! :exclamation:\n":""}${-(dmg.dmg)} ${
+        (Object.keys(this.modifier_effects).length) ? "( + " + -(dmg.skill_dmg) + " )" : ""} Damage dealt.*`,
       author: {
         name: `${target.title} > Take Damage`,
         icon_url: target.player_id || ""
@@ -101,7 +103,7 @@ DamageAbility.make_embed = function(user, target, dmg) {
       fields: [
         {
           name: `:heart: ${target.title}`,
-          value: `\`\`\`${this.dmg_stat.toUpperCase()}: ${target[this.dmg_stat].value} / ${target[this.dmg_stat].buffed_value}\`\`\``
+          value: `\`\`\`${this.dmg_stat.toUpperCase()}: ${target[this.dmg_stat].current_value} / ${target[this.dmg_stat].value}\`\`\``
         }
       ]
     })
@@ -110,7 +112,8 @@ DamageAbility.make_embed = function(user, target, dmg) {
         name: ":exclamation: Status Effect :exclamation:",
         value: target.buffs.filter(buff =>
           this.status_effects.find(item => item.name == buff.name)).map(buff =>
-          `${buff.title} ${(buff.stack > 1) ? "x" + buff.stack : ""}`).toString().trim().replace(/,/g, "\n")
+          `${buff.title} ${(buff.stack > 1) ? "x" + buff.stack : ""}`).toString().trim().replace(
+            /,/g, "\n")
       })
     }
   }

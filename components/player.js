@@ -53,8 +53,7 @@ module.exports = {
     });
     if (pretty_print) {
       final = Object.getOwnPropertyNames(final).map(item =>
-        `${item.toUpperCase()}: ${final[item].value}${(final[item].modifiers.find(item =>
-          item.source == "damage")) ? " / " + final[item].buffed_value: ""}\n`
+        `${item.toUpperCase()}: ${final[item].current_value}${(final[item].current_value != final[item].value) ? " / " + final[item].value: ""}\n`
       ).toString().replace(/,/g, "").trim()
     }
     return final
@@ -159,15 +158,16 @@ module.exports = {
     }
 
     Object.keys(player_stats).forEach((item) => {
-      self[item] = Stat.create(item.toUpperCase(), 1)
       if (kwargs.hasOwnProperty(item)) {
         if (!Number(kwargs[item]._base_val)) {
           let e =`ERROR PARSING GLOBALS.JSON: ${self.name}: ${item}\nExpected numerical _base_value.\nWARNING: this may cause issues with stat calculation\n`
           console.error(e)
         }
-        self[item]._base_val = Number(kwargs[item]._base_val)
+        self[item] = Stat.create(item.toUpperCase(), Number(kwargs[item]._base_val))
         self[item].modifiers = kwargs[item].modifiers
         self[item].changed = true
+      } else {
+        self[item] = Stat.create(item.toUpperCase(), 1)
       }
     });
 
