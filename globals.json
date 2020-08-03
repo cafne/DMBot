@@ -6,44 +6,44 @@
       "hp": {
         "name": "HP",
         "_base_val": 20,
-        "_value": 20,
+        "_value": 1,
         "modifiers": [],
-        "changed": false
+        "changed": true
       },
       "int": {
         "name": "INT",
         "_base_val": 1,
         "_value": 1,
         "modifiers": [],
-        "changed": false
+        "changed": true
       },
       "dex": {
         "name": "DEX",
         "_base_val": 10,
-        "_value": 10,
+        "_value": 1,
         "modifiers": [],
-        "changed": false
+        "changed": true
       },
       "str": {
         "name": "STR",
         "_base_val": 6,
-        "_value": 6,
+        "_value": 1,
         "modifiers": [],
-        "changed": false
+        "changed": true
       },
       "vit": {
         "name": "VIT",
         "_base_val": 1,
         "_value": 1,
         "modifiers": [],
-        "changed": false
+        "changed": true
       },
       "cha": {
         "name": "CHA",
         "_base_val": 1,
         "_value": 1,
         "modifiers": [],
-        "changed": false
+        "changed": true
       },
       "buffs": [],
       "dice_buff": {
@@ -60,44 +60,44 @@
       "hp": {
         "name": "HP",
         "_base_val": 20,
-        "_value": 20,
+        "_value": 1,
         "modifiers": [],
-        "changed": false
+        "changed": true
       },
       "int": {
         "name": "INT",
         "_base_val": 1,
         "_value": 1,
         "modifiers": [],
-        "changed": false
+        "changed": true
       },
       "dex": {
         "name": "DEX",
         "_base_val": 1,
         "_value": 1,
         "modifiers": [],
-        "changed": false
+        "changed": true
       },
       "str": {
         "name": "STR",
         "_base_val": 1,
         "_value": 1,
         "modifiers": [],
-        "changed": false
+        "changed": true
       },
       "vit": {
         "name": "VIT",
         "_base_val": 1,
         "_value": 1,
         "modifiers": [],
-        "changed": false
+        "changed": true
       },
       "cha": {
         "name": "CHA",
         "_base_val": 1,
         "_value": 1,
         "modifiers": [],
-        "changed": false
+        "changed": true
       },
       "buffs": [],
       "dice_buff": {
@@ -205,12 +205,7 @@
       "abilities": [
         {
           "status_effects": [],
-          "modifier_effects": {
-            "hp": {
-              "value": -2,
-              "source": "damage"
-            }
-          },
+          "modifier_effects": {},
           "conditions": [
             {
               "type": "target",
@@ -283,14 +278,6 @@
           "status_effects": [
             {
               "name": "bleeding",
-              "icon": ":knife:",
-              "desc": "",
-              "hp": -3,
-              "int": 0,
-              "dex": 0,
-              "str": 0,
-              "vit": 0,
-              "cha": 0,
               "stack": 1
             }
           ],

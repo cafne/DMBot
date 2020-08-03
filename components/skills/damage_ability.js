@@ -27,7 +27,7 @@ DamageAbility.calculate_dmg = function(user, target) {
     var dmg = user[this.atk_stat].value - target[this.def_stat].value
   }
   if (this.crit_stat && user.hasOwnProperty(this.crit_stat)) {
-    var crit = Math.floor(Math.random() * 20 + 1 + user[this.crit_stat].value)
+    var crit = Math.floor(Math.random() * 20 + 1) + user[this.crit_stat].value
     console.log("crit", crit);
     if (crit >= 20) {
       crit = true
@@ -85,7 +85,6 @@ DamageAbility.apply = function(user, target) {
     console.log("Warning: damage skill used but no Attack and Damageable stats were set")
   }
   return dmg
-
 }
 
 DamageAbility.make_embed = function(user, target, dmg) {
@@ -102,7 +101,7 @@ DamageAbility.make_embed = function(user, target, dmg) {
       fields: [
         {
           name: `:heart: ${target.title}`,
-          value: `\`\`\`${this.dmg_stat.toUpperCase()}: ${(target[this.dmg_stat].value) >= 0 ? target[this.dmg_stat].value : 0} / ${target[this.dmg_stat].buffed_value}\`\`\``
+          value: `\`\`\`${this.dmg_stat.toUpperCase()}: ${target[this.dmg_stat].value} / ${target[this.dmg_stat].buffed_value}\`\`\``
         }
       ]
     })

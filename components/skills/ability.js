@@ -107,13 +107,10 @@ module.exports = {
   load: function(kwargs, buffs) {
     let self = this.create(kwargs)
     self.status_effects.forEach((effect, i) => {
-      if (typeof effect == 'string') {
-        let find = buffs.find(item => item.name == effect)
-        if (find) {
-          self.status_effects[i] = find
-        }
-      } else {
-        self.status_effects[i] = Buff.create(effect)
+      let find = buffs.find(item => item.name == effect.name)
+      if (find) {
+        self.status_effects[i] = find
+        self.status_effects[i].stack = effect.stack
       }
     });
     Object.keys(self.modifier_effects).forEach((effect) => {
@@ -135,5 +132,17 @@ module.exports = {
       }
     });
     return self
+  },
+
+  save: function() {
+    let save = this.create(this)
+
+    this.status_effects.forEach((item, i) => {
+      save.status_effects[i] = {
+        name: item.name,
+        stack: item.stack
+      }
+    });
+    return save
   }
 }

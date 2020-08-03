@@ -77,11 +77,15 @@ module.exports = {
 
   add_modifier: function(mod) {
     let new_mod = (typeof mod == 'number') ? StatModifier.create(mod) : Object.assign(StatModifier.create(0), mod)
-    var index = this.modifiers.findIndex(item => item.source == new_mod.source)
-    if (index == -1) {
+    var find = this.modifiers.find(item => item.source == new_mod.source)
+    if (!find) {
       this.modifiers.push(new_mod)
     } else {
-      this.modifiers[index].value += new_mod.value
+      if (find.source == "damage" && find.value + new_mod.value > this.buffed_value) {
+        find.value = this.buffed_value
+      } else {
+        find.value += new_mod.value
+      }
     }
     this.changed = true
   },
@@ -115,9 +119,9 @@ module.exports = {
       var final = this.modifiers
       if (final.length > 1) {
         final = final.map(item => item.value).reduce((first, next) => first + next)
-        return final + this.base_val
+        return (final + this.base_val >= 0) ? final + this.base_val : 0
       }
-      else return final[0].value + this.base_val
+      else return (final[0].value + this.base_val >= 0) ? final[0].value + this.base_val : 0
     }
     else return this.base_val
   }

@@ -90,5 +90,13 @@ module.exports = {
       }
     });
     return self
+  },
+
+  save: function() {
+    let save = this.create(this)
+    save.abilities.forEach((item) => {
+      item = item.save()
+    })
+    return save
   }
 }

@@ -69,19 +69,21 @@ function save(item, key_name, location="globals.json") {
   }
 }
 
-function save_all() {
+function save_all(temp=false) {
   try {
     let data = JSON.parse(fs.readFileSync("globals.json"))
-    console.log("members", members[0].buffs);
     data["members"] = members.map(item => item.save())
 
     data["alias"] = alias
     data["items"] = items
     data["buffs"] = buffs
-    data["skills"] = skills
+    data["skills"] = skills = skills.map(item => item.save())
     data = JSON.stringify(data, null, 2)
-    fs.writeFileSync("globals.json", data)
-
+    if (!temp) {
+      fs.writeFileSync("globals.json", data)
+    } else {
+      fs.writeFileSync("globals_temp.json", data)
+    }
     data = JSON.parse(fs.readFileSync("config.json"))
     data = JSON.stringify(data, null, 2)
     data["player_stats"] = player_stats
@@ -140,7 +142,7 @@ function buff_embed(buff, info=false) {
 
 function skill_embed(skill, info=false) {
   let embed = new MessageEmbed()
-  embed.setTitle(skill.title)
+  embed.title(skill.title)
   embed.setDescription(skill.desc)
   return embed
 }
