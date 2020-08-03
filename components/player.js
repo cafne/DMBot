@@ -53,7 +53,9 @@ module.exports = {
     });
     if (pretty_print) {
       final = Object.getOwnPropertyNames(final).map(item =>
-        `${item.toUpperCase()}: ${final[item].current_value}${(final[item].current_value != final[item].value) ? " / " + final[item].value: ""}\n`
+        `${item.toUpperCase()}: ${final[item].current_value}${(final[item].current_value != final[item].value) ? " / " + final[item].value: ""} ${
+          (final[item].total_modifiers != 0) ? "(**" + ((final[item].total_modifiers < 0) ? "" : "+") +
+          final[item].total_modifiers + "**)" : ""}\n`
       ).toString().replace(/,/g, "").trim()
     }
     return final
@@ -164,6 +166,7 @@ module.exports = {
           console.error(e)
         }
         self[item] = Stat.create(item.toUpperCase(), Number(kwargs[item]._base_val))
+        self[item]._current_value = kwargs[item]._current_value
         self[item].modifiers = kwargs[item].modifiers
         self[item].changed = true
       } else {

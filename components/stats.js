@@ -130,9 +130,13 @@ module.exports = {
     }
   },
 
-  get_final_value: function() {
-    let final = this.modifiers.filter(item => item.source != "damage").map(item =>
+  get total_modifiers() {
+    return this.modifiers.filter(item => item.source != "damage").map(item =>
       item.value).reduce((first, next) => first + next, 0)
+  },
+
+  get_final_value: function() {
+    let final = this.total_modifiers
     return (final + this.base_val < 0) ? 0 : final + this.base_val
   }
 }
