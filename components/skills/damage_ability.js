@@ -9,7 +9,7 @@ DamageAbility.create = function(kwargs) {
   self.status_effects = []
   self.modifier_effects = []
   self.conditions = []
-  self.target = "self"
+  self.target = "target"
   self.type = "attack"
 
   self.dmg_stat = Object.keys(player_stats).find(item => player_stats[item] == "dmg_stat")
@@ -61,7 +61,11 @@ DamageAbility.activate = function(user, target) {
 
 DamageAbility.apply = function(user, target) {
 
-  let dmg = {dmg: 0, crit: false, skill_dmg: 0}
+  let dmg = {
+    dmg: 0,
+    crit: false,
+    skill_dmg: this.total_ability_damage
+  }
 
   // Damage Calculation
 
@@ -69,7 +73,7 @@ DamageAbility.apply = function(user, target) {
     if (!user.hasOwnProperty(this.atk_stat) && target.hasOwnProperty(this.dmg_stat)){
       console.log("Warning: damage skill used but target and user do not have attack or damageable stats")
     } else {
-      dmg = this.calculate_dmg(user, target)
+      Object.assign(dmg, this.calculate_dmg(user, target))
       target[this.dmg_stat].add_modifier(StatModifier.create(dmg.dmg, "damage"))
     }
   } else {
@@ -79,7 +83,7 @@ DamageAbility.apply = function(user, target) {
   // Apply Buffs
   this.status_effects.forEach((item) => {
     target.equip(item)
-  });
+  })
 
   // Apply Stat Modifiers
   for (let item of Object.keys(this.modifier_effects)) {
@@ -95,7 +99,7 @@ DamageAbility.make_embed = function(user, target, dmg) {
   if (target.hasOwnProperty(this.dmg_stat)) {
     Object.assign(embed, {
       description: `*${(dmg.crit) ? ":exclamation: Critical hit! :exclamation:\n":""}${-(dmg.dmg)} ${
-        (Object.keys(this.modifier_effects).length) ? "( + " + -(dmg.skill_dmg) + " )" : ""} Damage dealt.*`,
+        (Object.keys(this.modifier_effects).length) ? "( + " + -dmg.skill_dmg + " )" : ""} Damage dealt.*`,
       author: {
         name: `${target.title} > Take Damage`,
         icon_url: target.player_id || ""

@@ -2,7 +2,7 @@ const AbilityRoll = require('./ability_roll.js')
 const TargetAbilityCondition = require('./target_ability_condition.js')
 const FlatValueAbilityCondition = require('./flat_value_ability_condition.js')
 const RandomValueAbilityCondition = require('./random_value_ability_condition.js')
-
+const {player_stats} = require('../../config.json')
 const Buff = require('../buff.js')
 const StatModifier = require('../stat_modifier.js')
 
@@ -90,12 +90,42 @@ module.exports = {
     });
   },
 
+  get total_ability_damage() {
+    return this.ability_damage + this.ability_heal
+  },
+
+  get ability_damage() {
+    return Object.keys(this.modifier_effects).filter(item =>
+      this.modifier_effects[item].source == "damage"
+      && this.modifier_effects[item].value < 0).map(item =>
+      this.modifier_effects[item].value).reduce((first, next) => first + next, 0)
+  },
+
+  get ability_heal() {
+    return Object.keys(this.modifier_effects).filter(item =>
+      this.modifier_effects[item].source == "damage" &&
+      this.modifier_effects[item].value > 0).map(item =>
+        this.modifier_effects[item].value).reduce((first, next) => first + next, 0)
+  },
+
   make_embed: function(user, target) {
+    let ability_target = (this.target == "self") ? user : target
+    let dmg = this.total_ability_damage
+    let desc = ""
+    if (this.total_ability_damage < 0) {
+      desc = `Takes ${dmg} damage.`
+    } else if (this.total_ability_damage > 0) {
+      desc = `Healed for ${dmg} ${Object.keys(player_stats).find(item =>
+        player_stats[item] == "dmg_stat")}`
+    } else {
+      desc = "Buffs activated!"
+    }
+
     embed = {
-      description: `${(this.target == "self") ? user.title : target.title} got buffed!`,
+      description: desc,
       author: {
-        name: `${user.title} > Status`,
-        icon_url: user.player_id || ""
+        name: `${ability_target.title} > Status Change`,
+        icon_url: ability_target.player_id || ""
       },
       footer: {
         text: "*lazy placeholder embed: Represents stat buff"

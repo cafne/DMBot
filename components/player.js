@@ -169,12 +169,17 @@ module.exports = {
           console.error(e)
         }
         self[item] = Stat.create(item.toUpperCase(), Number(kwargs[item]._base_val))
-        self[item]._current_value = kwargs[item]._current_value
-        self[item].modifiers = kwargs[item].modifiers
-        self[item].changed = true
+        if (kwargs[item].hasOwnProperty("_current_value")) {
+          self[item]._current_value = kwargs[item]._current_value
+        }
+        if (kwargs[item].hasOwnProperty("modifiers")) {
+          self[item].modifiers = kwargs[item].modifiers
+        }
       } else {
         self[item] = Stat.create(item.toUpperCase(), 1)
       }
+      self[item].changed = true
+      self[item].value
     });
 
     if (kwargs.buffs.length) {

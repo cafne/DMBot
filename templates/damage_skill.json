@@ -1,0 +1,39 @@
+{
+  "name": "<skillName>",
+  "desc": "<[name] to print skill user's name and [target] for target's (no brackets)>",
+  "icon": "<emoji or :discordStyleEmoji:>",
+  "abilities": [
+    {
+      "status_effects": [
+        {
+          "name": "<buffName>",
+          "stack": "<# of times to apply buff>"
+        }
+      ],
+      "modifier_effects": {
+        "<statName>": {
+          "value": "<numericalValue>",
+          "source": "<null/damage/skillName>"
+        }
+      },
+      "conditions": [
+        {
+          "type": "<target: roll against player/flat: roll aginst value/dice: roll against dice roll>",
+          "user_stats": [
+            "<list of stats goes here>"
+          ],
+          "dice_num": "<user's dice>",
+          "dice_sides": "<user's dice>",
+          "target_stats": [
+            "<list of stats>"
+          ],
+          "compare_dice_sides": "<target player's dice>",
+          "compare_dice_num": "<target player's dice>"
+        }
+      ],
+      "target": "target",
+      "type": "attack"
+    }
+  ],
+  "self_target": false
+}

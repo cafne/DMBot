@@ -1,0 +1,7 @@
+{
+  "name": "<buffName>"
+  "icon": "<emoji or :discordStyleEmoji:>",
+  "desc": "<buff Description>",
+  "<nameOfStat to affect>": "<numerical value>",
+  "stack": "<Normally, 1>"
+}

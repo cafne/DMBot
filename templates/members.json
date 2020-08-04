@@ -1,0 +1,27 @@
+{
+  "name": "<PlayerName>",
+  "player_id": "<DiscordUserID>",
+  "<statName goes here>": {
+    "_base_val": "<Original Stat Value>",
+    "_current_value": "<Current Stat Value>",
+    "modifiers": [
+      "<statName goes here>": {
+        "value": "<numericalValue>",
+        "source": "<null, damage, or a buffName>"
+      }
+    ]
+  },
+  "buffs": [
+    {
+      "name": "<buffName>",
+      "stack": "# of times to apply buff"
+    }
+  ],
+  "dice_buff": {
+    "dice_num": "<# of dice to add (negative # to decrease)>",
+    "dice_sides": "<# of sides to add to dice (negative # to decrease)>"
+  },
+  "inventory": {
+    "items": []
+  }
+}

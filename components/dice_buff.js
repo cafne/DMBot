@@ -25,7 +25,10 @@ module.exports = {
     }
     dice_num += this.dice_num
     dice_sides += this.dice_sides
-    return {dice_num: dice_num, dice_sides: dice_sides}
+    return {
+      dice_num: (dice_num > 1) ? dice_num : 1,
+      dice_sides: (dice_sides > 1) ? dice_sides : 1
+    }
   },
 
   print: function(add="") {

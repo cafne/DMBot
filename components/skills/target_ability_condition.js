@@ -34,7 +34,7 @@ TargetAbilityCondition.get_target_roll = function(user, target) {
     target_roll.stats[stat] = target[stat].value
   });
   target_roll.total = Object.values(target_roll.roll).reduce((first, next) =>
-	first + next) + Object.values(target_roll.stats).reduce((first, next) => first + next, 0)
+	first + next, 0) + Object.values(target_roll.stats).reduce((first, next) => first + next, 0)
   return Object.assign(target_roll, {character: target})
 }
 

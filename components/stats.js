@@ -92,16 +92,25 @@ module.exports = {
   add_modifier: function(mod) {
     let new_mod = (typeof mod == 'number') ? StatModifier.create(mod) : Object.assign(StatModifier.create(0), mod)
     var find = this.modifiers.find(item => item.source == new_mod.source)
-    if (!find) {
-      this.modifiers.push(new_mod)
-    } else {
-      if (find.source == "damage" && find.value + new_mod.value > this.value) {
-        find.value = this.value
+    if (new_mod.source == "damage") {
+      if (this.current_value + new_mod.value > this._value) {
+        if (!(this.current_value > this._value)) {
+          new_mod.value -= this.current_value + new_mod.value - this._value
+        } else {
+          new_mod.value = 0
+        }
+      } else if (this.current_value + new_mod.value < 0) {
+        new_mod.value -= this.current_value + new_mod.value
+      }
+    }
+    if (new_mod.value != 0) {
+      if (!find) {
+        this.modifiers.push(new_mod)
       } else {
         find.value += new_mod.value
       }
+      this.changed = true
     }
-    this.changed = true
   },
 
   // vv somewhat redundant right now but maybe we'll use it later haha vv
