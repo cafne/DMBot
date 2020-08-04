@@ -1,5 +1,5 @@
 {
-  "name": "<buffName>"
+  "name": "<buffName>",
   "icon": "<emoji or :discordStyleEmoji:>",
   "desc": "<buff Description>",
   "<nameOfStat to affect>": "<numerical value>",
