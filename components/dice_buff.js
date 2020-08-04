@@ -13,5 +13,27 @@ module.exports = {
       }
     });
     return self
+  },
+
+  add: function(dice) {
+    if (typeof dice == 'string') {
+      var dice_sides = Number(dice.toLowerCase().split("d"))
+      var dice_num = Number(dice_sides.shift())
+    } else {
+      var dice_num = dice.dice_num
+      var dice_sides = dice.dice_sides
+    }
+    dice_num += this.dice_num
+    dice_sides += this.dice_sides
+    return {dice_num: dice_num, dice_sides: dice_sides}
+  },
+
+  print: function(add="") {
+    if (add) {
+      let dice = this.add(add)
+      return `Extra dice: ${dice.dice_num}\nExtra dice sides: ${dice.dice_sides}`
+    } else {
+      return `Extra dice: ${this.dice_num}\nExtra dice sides: ${this.dice_sides}`
+    }
   }
 }

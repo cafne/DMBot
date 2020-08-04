@@ -7,15 +7,19 @@
         "name": "HP",
         "_base_val": 20,
         "_value": 20,
-        "_current_value": 20,
+        "_current_value": 70,
         "modifiers": [
           {
-            "value": 3,
+            "value": 50,
             "source": null
           },
           {
             "value": 3,
             "source": null
+          },
+          {
+            "value": -3,
+            "source": "bleeding"
           }
         ],
         "changed": true
@@ -32,8 +36,13 @@
         "name": "DEX",
         "_base_val": 10,
         "_value": 10,
-        "_current_value": 10,
-        "modifiers": [],
+        "_current_value": 4,
+        "modifiers": [
+          {
+            "value": -6,
+            "source": null
+          }
+        ],
         "changed": true
       },
       "str": {
@@ -60,10 +69,15 @@
         "modifiers": [],
         "changed": true
       },
-      "buffs": [],
+      "buffs": [
+        {
+          "name": "bleeding",
+          "stack": 1
+        }
+      ],
       "dice_buff": {
         "dice_num": 0,
-        "dice_sides": 0
+        "dice_sides": 2
       },
       "inventory": {
         "items": []
@@ -77,7 +91,20 @@
         "_base_val": 20,
         "_value": 20,
         "_current_value": 20,
-        "modifiers": [],
+        "modifiers": [
+          {
+            "value": -5,
+            "source": "damage"
+          },
+          {
+            "value": -10,
+            "source": "poisoned"
+          },
+          {
+            "value": 3,
+            "source": null
+          }
+        ],
         "changed": true
       },
       "int": {
@@ -93,7 +120,12 @@
         "_base_val": 1,
         "_value": 1,
         "_current_value": 1,
-        "modifiers": [],
+        "modifiers": [
+          {
+            "value": 12,
+            "source": null
+          }
+        ],
         "changed": true
       },
       "str": {
@@ -101,7 +133,12 @@
         "_base_val": 1,
         "_value": 1,
         "_current_value": 1,
-        "modifiers": [],
+        "modifiers": [
+          {
+            "value": 20,
+            "source": null
+          }
+        ],
         "changed": true
       },
       "vit": {
@@ -120,7 +157,12 @@
         "modifiers": [],
         "changed": true
       },
-      "buffs": [],
+      "buffs": [
+        {
+          "name": "poisoned",
+          "stack": 2
+        }
+      ],
       "dice_buff": {
         "dice_num": 0,
         "dice_sides": 0

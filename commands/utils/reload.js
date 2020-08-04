@@ -11,7 +11,7 @@ module.exports = {
   args: false,
   admin: true,
   async execute(message, args) {
-    if (!args.includes("nosave")) {
+    if (!args.includes("nosave") && !args.includes("ns")) {
       if (args.includes("save")) {
         save_all()
         await message.channel.send("```Saving Data.```")
@@ -21,7 +21,7 @@ module.exports = {
       }
     }
     try {
-      if (!args.includes("nobackup")) {
+      if (!args.includes("nobackup") && !args.includes("nb")) {
         save_all(true)
         let attachment = new Discord.MessageAttachment('./globals_temp.json')
         await message.author.send(`${message.client.user.tag} data backup!`, attachment)
@@ -38,6 +38,5 @@ module.exports = {
       await message.channel.send("```Error: data is invalid.```")
       return console.log(e)
     }
-    await message.channel.send("```Data Reloaded.```")
   }
 }

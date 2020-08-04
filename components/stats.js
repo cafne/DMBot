@@ -118,7 +118,11 @@ module.exports = {
 
   remove_all_from_source: function(source) {
     if (source == "damage") {
-      this._current_value = this.value
+      if (this._current_value <= this.value) {
+        this._current_value = this.value
+      } else {
+        this._current_value = this.current_value
+      }
     }
     if (this.modifiers.some(item => item.source === source)) {
       this.modifiers = this.modifiers.filter(item => item.source != source)

@@ -53,8 +53,9 @@ module.exports = {
     });
     if (pretty_print) {
       final = Object.getOwnPropertyNames(final).map(item =>
-        `${item.toUpperCase()}: ${final[item].current_value}${(final[item].current_value != final[item].value) ? " / " + final[item].value: ""} ${
-          (final[item].total_modifiers != 0) ? "(**" + ((final[item].total_modifiers < 0) ? "" : "+") +
+        `${item.toUpperCase()}: ${(player_stats[item] == "dmg_stat") ?
+        (`${final[item].current_value}${(final[item].current_value != final[item].value) ? " / " + final[item].value: ""}`)
+         : final[item].value} ${(final[item].total_modifiers != 0) ? "(**" + ((final[item].total_modifiers < 0) ? "" : "+") +
           final[item].total_modifiers + "**)" : ""}\n`
       ).toString().replace(/,/g, "").trim()
     }
@@ -103,7 +104,8 @@ module.exports = {
     for (let stat of Object.keys(player_stats)) {
       this[stat].remove_all_from_source(null)
     }
-    this.dice_buff = null
+    this.dice_buff.dice_num = 0
+    this.dice_buff.dice_sides = 0
   },
 
   unequip: function(buff, stack=1) {
@@ -121,7 +123,8 @@ module.exports = {
         find.reapply(this)
       }
     } else if (buff.__proto__ == DiceBuff) {
-      this.dice_buff = null
+      this.dice_buff.dice_num = 0
+      this.dice_buff.dice_sides = 0
     }
   },
 

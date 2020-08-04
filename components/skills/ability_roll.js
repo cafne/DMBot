@@ -26,13 +26,12 @@ module.exports = {
 
   roll: function(user, target) {
   	let user_roll = {}
+ 		user_roll.dice = user.dice_buff.add({
+			dice_num: this.dice_num,
+			dice_sides: this.dice_sides
+		})
     user_roll.character = user
-		if (user.dice_buff) {
-			user_roll.roll = dice_roller(user.dice_buff.dice_num + this.dice_num,
-				user.dice_buff.dice_sides + this.dice_sides)
-		} else {
-			user_roll.roll = dice_roller(this.dice_num, this.dice_sides)
-		}
+		user_roll.roll = dice_roller(user_roll.dice.dice_num, user_roll.dice.dice_sides)
     user_roll.stats = {}
     this.user_stats.filter(stat => user.hasOwnProperty(stat)).forEach(stat => {
       user_roll.stats[stat] = user[stat].value
@@ -57,14 +56,14 @@ module.exports = {
   },
 
   make_embed: function(user, target, passed) {
-    let embed = {
+		let embed = {
       "author": {
         "name": `Check > ${(passed) ? "Passed": "Failed"}`,
 				"icon_url": user.character.player_id || ""
       },
       "fields": [
         {
-          "name": ":game_die:",
+          "name": `:game_die: ${user.dice.dice_num}D${user.dice.dice_sides}`,
           "value": `${user.character.title} rolled a ${user.total}\`\`\`php\n${Object.values(
 						user.roll).toString().trim().replace(/,/g, " + ")} ${(Object.keys(user.stats).length) ? "+" : ""} ${Object.keys(
 							user.stats).map(item => `${user.stats[item]} (${item.toUpperCase()})`).toString().trim().replace(/,/g, " + ")}\`\`\``

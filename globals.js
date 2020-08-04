@@ -119,6 +119,9 @@ function member_embed(character, guild, info=false) {
 
   embed.setAuthor(character.title, (owner) ? owner.user.avatarURL() : "")
   embed.addField(":crossed_swords: Stats", character.get_stats(true))
+  if (Object.values(character.dice_buff).some(item => item != 0)) {
+    embed.setFooter(character.dice_buff.print())
+  }
   if (character.buffs.length) embed.addField(":exclamation: Status Ailments", character.print_buffs())
   return embed
 }

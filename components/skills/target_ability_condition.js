@@ -25,12 +25,11 @@ TargetAbilityCondition.create = function(kwargs) {
 
 TargetAbilityCondition.get_target_roll = function(user, target) {
   let target_roll = {stats: {}}
-	if (target.dice_buff) {
-		target_roll.roll = dice_roller(target.dice_buff.dice_num + this.dice_num,
-			target.dice_buff.dice_sides + this.dice_sides)
-	} else {
-		target_roll.roll = dice_roller(this.dice_num, this.dice_sides)
-	}
+	target_roll.dice = target.dice_buff.add({
+		dice_num: this.dice_num,
+		dice_sides: this.dice_sides
+	})
+	target_roll.roll = dice_roller(target_roll.dice.dice_num, target_roll.dice.dice_sides)
   this.target_stats.filter(stat => target.hasOwnProperty(stat)).forEach(stat => {
     target_roll.stats[stat] = target[stat].value
   });
@@ -41,14 +40,14 @@ TargetAbilityCondition.get_target_roll = function(user, target) {
 
 TargetAbilityCondition.make_embed = function(user, target, passed) {
   let embed = this.__proto__.make_embed(user, target, passed)
-  embed.fields[0].name = (passed) ? ":white_check_mark:" : ":no_entry_sign:"
+  embed.fields[0].name = `${(passed) ? ":white_check_mark:" : ":no_entry_sign:"} ${user.dice.dice_num}D${user.dice.dice_sides}`
 
 	// TODO: uh find out why this works
 	// might be some weird recursion and may cause issues down the line
 	// should be embed.fields.push(), but that ends up adding an extra target_roll field
 
   embed.fields[1] = {
-    "name": (!passed) ? ":white_check_mark:" : ":no_entry_sign:",
+    "name": `${(!passed) ? ":white_check_mark:" : ":no_entry_sign:"} ${target.dice.dice_num}D${target.dice.dice_sides}`,
 		author: {
 			icon_url: user.character.player_id || ""
 		},
