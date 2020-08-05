@@ -112,6 +112,15 @@ function validate_command_name(input) {
   } else return true
 }
 
+function isAdmin(member) {
+  if (member.roles.cache.find(item => admin_roles.includes(item.name))
+  || member.hasPermission("ADMINISTRATOR")) {
+    return true
+  } else {
+    return false
+  }
+}
+
 // Start Embeds //
 function member_embed(character, guild, info=false) {
   let embed = new MessageEmbed()
@@ -196,5 +205,6 @@ load(members, "members")
 // Export for global usage
 module.exports = {
   members, skills, alias, buffs, items, sent_emoji, save, save_all, load, get_alias,
-  prefix, admin_roles, token, validate_command_name, member_embed, item_embed, buff_embed, skill_embed, lookup
+  prefix, admin_roles, token, validate_command_name, member_embed, item_embed, buff_embed, skill_embed, lookup,
+  isAdmin
 }

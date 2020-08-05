@@ -34,8 +34,8 @@ for (const file of emojiFiles) {
   client.emoji_events.set(emoji.name, emoji);
 }
 
-var {buffs, members, skills, items, sent_emoji, save, load, alias, get_alias,prefix, token, admin_roles} = require('./globals.js')
-
+var {buffs, members, skills, items, sent_emoji, alias, prefix, token, admin_roles} = require('./globals.js')
+const {save, load, get_alias, isAdmin} = require('./globals.js')
 // Start Bot //
 
 client.on('ready', () => {
@@ -73,8 +73,7 @@ client.on('message', msg => {
 		// Check if the command is admin only
 		if (command.hasOwnProperty("admin")) {
 			// Check if the user is an admin; as defined by the guild role flag "ADMINSTRATOR" or config.admin_roles
-			if (command.admin == true && !msg.member.roles.cache.find(item => admin_roles.includes(item.name)) &&
-			!msg.member.hasPermission("ADMINISTRATOR")) {
+			if (command.admin == true && !isAdmin(msg.member)) {
 				return msg.channel.send(`You don't have the permissions for that command, ${msg.author}!`)
 			}
 		}
